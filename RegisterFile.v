@@ -82,14 +82,14 @@ initial begin
         32'b00000000000000000000000000000000, 
     };
     for (i = 0; i < 31; i++) begin
-        registers[i] = registers_init[i*32:32];
+        registers[i] <= registers_init[i*32:32];
     end
 end
 
 /* Main function */
 always @(posedge CLK) begin
     if (RegWrite) begin
-        registers[writeReg] = writeData;
+        registers[writeReg] <= writeData;
     end
 end
 
