@@ -87,13 +87,17 @@ initial begin
 end
 
 /* Main function */
+/* write register on posedge */
 always @(posedge CLK) begin
     if (RegWrite) begin
         registers[writeReg] <= writeData;
     end
 end
 
-assign readData1 = registers[readReg1];
-assign readData2 = registers[readReg2];
+/* read register on negedge */
+always @(negedge CLK) begin
+    readData1 <= registers[readReg1];
+    readData2 <= registers[readReg2];
+end
 
 endmodule
