@@ -203,10 +203,177 @@ BranchUnit _branch_unit (
 assign _pc_in = (_pc_src) ? _pcBranch : _pc4;
 
 /* ID_EX */
+assign _if_id_register_rs = instruction[25:21];
+assign _if_id_register_rt = instruction[20:16];
+assign _if_id_register_rd = instruction[15:11];
+
+wire _id_ex_mem_to_reg;
+wire _id_ex_reg_write;
+wire _id_ex_mem_write;
+/* wire _id_ex_mem_read; */
+wire [1:0] _id_ex_branch;
+wire [3:0] _id_ex_alu_control;
+wire _id_ex_alu_src;
+wire _id_ex_reg_dst;
+wire [31:0] _id_ex_read_data1;
+wire [31:0] _id_ex_read_data2;
+wire [31:0] _id_ex_extended_data;
+wire [4:0] _id_ex_register_rs;
+/* wire [4:0] _id_ex_register_rt; */
+/* wire [4:0] _id_ex_register_rd; */
+
 ID_EX _id_ex (
     clk, 
     _mem_to_reg, 
-    _reg_write
-)
+    _reg_write, 
+    _mem_write, 
+    _mem_read, 
+    _branch, 
+    _alu_control, 
+    _alu_src, 
+    _reg_dst, 
+    _read_data1, 
+    _read_data2, 
+    _signed_data, 
+    _if_id_register_rs, 
+    _if_id_register_rt, 
+    _if_id_register_rd, 
+    _id_ex_mem_to_reg, 
+    _id_ex_reg_write, 
+    _id_ex_mem_write, 
+    _id_ex_mem_read, 
+    _id_ex_branch, 
+    _id_ex_alu_control, 
+    _id_ex_alu_src, 
+    _id_ex_reg_dst, 
+    _id_ex_read_data1, 
+    _id_ex_read_data2, 
+    _id_ex_extended_data, 
+    _id_ex_register_rs, 
+    _id_ex_register_rt, 
+    _id_ex_register_rd
+);
 
+/* ALU */ 
+wire [31:0] _alu_src_a;
+wire [31:0] _alu_src_b;
+wire _alu_zero;
+wire [31:0] _alu_result;
+
+ALU _alu (
+    _alu_src_a, 
+    _alu_src_b, 
+    _id_ex_alu_control, 
+    _alu_zero, 
+    _alu_result
+);
+
+/* Forwarding Unit */ 
+/* TODO: 
+    declaration
+    */
+wire [1:0] _forward_a;
+wire [1:0] _forward_b;
+wire _is_forwarding;
+
+ForwardingUnit _forwarding_unit (
+    _ex_mem_reg_write, 
+    _mem_wb_reg_write, /* TODO */
+    _ex_mem_register_rd, 
+    _mem_wb_register_rd, 
+    _id_ex_register_rs, 
+    _id_ex_register_rt, 
+    _forward_a, 
+    _forward_b, 
+    _is_forwarding
+);
+
+/* mux around ALU */
+wire [31:0] mux_temp;
+wire [31:0] ex_mem_write_data_in;
+wire [31:0] ex_mem_register_rd_in;
+always @(*) begin
+    case (_forward_a)
+        2'b00:
+            _alu_src_a = _id_ex_read_data1;
+        2'b10:
+            _alu_src_a = _ex_mem_alu_result;
+        2'b01:
+            _alu_src_a = _wb_data; /* TODO */
+    endcase
+
+    case (_forward_b)
+        2'b00: begin
+            mux_temp = (_id_ex_alu_src) ? _id_ex_extended_data : _id_ex_read_data2;
+            _alu_src_b = mux_temp;
+        end
+        2'b10:
+            _alu_src_b = _ex_mem_alu_result;
+        2'b01:
+            _alu_src_b = _wb_data;
+    endcase
+
+    /* Green part in the map */ 
+    ex_mem_write_data_in = (_is_forwarding) ? _alu_src_b : _id_ex_read_data1;
+
+    ex_mem_register_rd_in = (_id_ex_reg_dst) ? _id_ex_register_rt : _id_ex_register_rd;
+end
+
+/* EX_MEM */
+wire _ex_mem_mem_to_reg;
+wire _ex_mem_reg_write;
+wire _ex_mem_mem_write;
+wire _ex_mem_mem_read;
+/* wire [31:0] _ex_mem_alu_result; */
+wire _ex_mem_zero;
+wire [31:0] _ex_mem_write_data;
+/* wire [4:0] _ex_mem_register_rd; */
+EX_MEM _ex_mem (
+    clk, 
+    _id_ex_mem_to_reg, 
+    _id_ex_reg_write, 
+    _id_ex_mem_write, 
+    _id_ex_mem_read, 
+    _alu_result, 
+    _alu_zero, 
+    ex_mem_write_data_in, 
+    ex_mem_register_rd_in, 
+    _ex_mem_mem_to_reg, 
+    _ex_mem_reg_write, 
+    _ex_mem_mem_write, 
+    _ex_mem_mem_read, 
+    _ex_mem_alu_result, 
+    _ex_mem_zero, 
+    _ex_mem_write_data, 
+    _ex_mem_register_rd
+);
+
+/* Main Memory */
+wire [31:0] _mem_data;
+MainMemory _mem (
+    clk, 
+    1'b0, 
+    1'b1, 
+    _ex_mem_alu_result >> 2, 
+    _ex_mem_write_data, 
+    _mem_data
+);
+
+/* MEM_WB */ 
+wire _mem_wb_mem_to_reg;
+wire _mem_wb_reg_write;
+/* wire [31:0] _mem_wb_read_data; */
+wire [31:0] _mem_wb_alu_result;
+/* wire [4:0] _mem_wb_register_rd; */ 
+MEM_WB _mem_wb (
+    clk, 
+    _ex_mem_mem_to_reg, 
+    _ex_mem_reg_write, 
+    _mem_data, 
+    _ex_mem_alu_result, 
+    _ex_mem_register_rd, 
+); 
+
+/* WB */
+assign _wb_data = (_mem_wb_mem_to_reg) ? _mem_wb_read_data : _mem_wb_alu_result;
 endmodule
