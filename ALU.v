@@ -12,7 +12,7 @@ module ALU (
     input [31:0] data1, 
     input [31:0] data2, 
     input [3:0]  ALUControl, 
-    output reg ZERO, 
+    output reg zero, 
     output reg [31:0] result
 );
 /* 
@@ -23,7 +23,7 @@ module ALU (
  * data2 -> the second input data
  * ALUControl -> the 4-bit ALU control signal
  * OUTPUTS:
- * ZERO -> zero flag
+ * zero -> zero flag
  * result -> the computed result
  */
 
@@ -65,7 +65,7 @@ always @(*) begin
         end
     endcase
 
-    ZERO = (result == 32'b0);
+    zero = (result == 32'b0);
 end
 
 

@@ -28,6 +28,7 @@ module ForwardingUnit (
     input [4:0] ID_EX_RegisterRt, 
     output reg [1:0] ForwardA, 
     output reg [1:0] ForwardB
+    output reg IsForwarding
 );
 
 /* input declaration */
@@ -47,6 +48,7 @@ always @(*) begin
         begin
             ForwardA = 2'b10;
             ForwardB = 2'b00;
+            IsForwarding = 1'b1;
         end
 
     
@@ -56,6 +58,7 @@ always @(*) begin
         begin
             ForwardA = 2'b00;
             ForwardB = 2'b10;
+            IsForwarding = 1'b1;
         end
 
     /* MEM hazard */
@@ -68,6 +71,7 @@ always @(*) begin
         begin
             ForwardA = 2'b01;
             ForwardB = 2'b00;
+            IsForwarding = 1'b1;
         end
 
     else if (MEM_WB_RegWirte
@@ -79,11 +83,13 @@ always @(*) begin
         begin
             ForwardA = 2'b00;
             ForwardB = 2'b01;
+            IsForwarding = 1'b1;
         end
     
     else begin
         ForwardA = 2'b00;
         ForwardB = 2'b00;
+        IsForwarding = 1'b0;
     end
 
 end

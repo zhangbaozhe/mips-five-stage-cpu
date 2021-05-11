@@ -36,7 +36,8 @@ module HazardUnit (
     input [4:0] IF_ID_RegisterRs, 
     input [4:0] IF_ID_RegisterRt, 
     output reg PCWrite, 
-    output reg IF_ID_Write
+    output reg IF_ID_Write, 
+    output reg Stall
 );
 
 wire ID_EX_MemRead;
@@ -55,6 +56,7 @@ always @(*) begin
     begin
         PCWrite = 0;
         IF_ID_Write = 0;
+        Stall = 1;
     end
     /* this handles (2) */
     else if ((Branch != 2'b00) 
@@ -63,6 +65,7 @@ always @(*) begin
     begin
         PCWrite = 0;
         IF_ID_Write = 0;
+        Stall = 1;
     end
     /* this handles the second cycle in (3) */
     else if ((Branch != 2'b00) 
@@ -71,10 +74,12 @@ always @(*) begin
     begin
         PCWrite = 0;
         IF_ID_Write = 0;
+        Stall = 1;
     end
     else begin
         PCWrite = 1;
         IF_ID_Write = 1;
+        Stall = 0;
     end
 end
 
