@@ -44,30 +44,48 @@ always @(*) begin
     if (EX_MEM_RegWrite 
         && (EX_MEM_RegisterRd != 5'b00000) 
         && (EX_MEM_RegisterRd == ID_EX_RegisterRs))
-        ForwardA = 2'b10;
+        begin
+            ForwardA = 2'b10;
+            ForwardB = 2'b00;
+        end
 
     
-    if (EX_MEM_RegWrite 
+    else if (EX_MEM_RegWrite 
         && (EX_MEM_RegisterRd != 5'b00000) 
         && (EX_MEM_RegisterRd == ID_EX_RegisterRt))
-        ForwardB = 2'b10;
+        begin
+            ForwardA = 2'b00;
+            ForwardB = 2'b10;
+        end
 
     /* MEM hazard */
-    if (MEM_WB_RegWirte
+    else if (MEM_WB_RegWirte
         && (MEM_WB_RegisterRd != 5'b00000)
         && ! (EX_MEM_RegWrite 
               && (EX_MEM_RegisterRd != 5'b00000)
               && (EX_MEM_RegisterRd == ID_EX_RegisterRs))
         && (MEM_WB_RegisterRd == ID_EX_RegisterRs))
-        ForwardA = 2'b01;
+        begin
+            ForwardA = 2'b01;
+            ForwardB = 2'b00;
+        end
 
-    if (MEM_WB_RegWirte
+    else if (MEM_WB_RegWirte
         && (MEM_WB_RegisterRd != 5'b00000)
         && ! (EX_MEM_RegWrite 
               && (EX_MEM_RegisterRd != 5'b00000)
               && (EX_MEM_RegisterRd == ID_EX_RegisterRt))
         && (MEM_WB_RegisterRd == ID_EX_RegisterRt))
-        ForwardB = 2'b01;
+        begin
+            ForwardA = 2'b00;
+            ForwardB = 2'b01;
+        end
+    
+    else begin
+        ForwardA = 2'b00;
+        ForwardB = 2'b00;
+    end
+
 end
 
 endmodule

@@ -26,4 +26,16 @@ module BranchUnit (
     output reg PCSrc
 );
 
+always @(*) begin
+    if (Branch != 2'b00)
+    begin
+        if (zero == 1)
+            PCSrc = 1;
+        else 
+            PCSrc = 0;
+    end
+    else 
+        PCSrc = 0;
+end
+
 endmodule
