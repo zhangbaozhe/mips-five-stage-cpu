@@ -27,7 +27,7 @@ module CPU (
     input clk
 );
 
-reg clk;
+wire clk;
 
 /* PC instantiation */
 wire _pc_write;
@@ -205,6 +205,7 @@ assign _pc_in = (_pc_src) ? _pcBranch : _pc4;
 /* ID_EX */
 assign _if_id_register_rs = instruction[25:21];
 assign _if_id_register_rt = instruction[20:16];
+wire [4:0] _if_id_register_rd;
 assign _if_id_register_rd = instruction[15:11];
 
 wire _id_ex_mem_to_reg;
@@ -291,7 +292,7 @@ ForwardingUnit _forwarding_unit (
 /* mux around ALU */
 wire [31:0] mux_temp;
 wire [31:0] ex_mem_write_data_in;
-wire [31:0] ex_mem_register_rd_in;
+wire [4:0] ex_mem_register_rd_in;
 always @(*) begin
     case (_forward_a)
         2'b00:
@@ -355,7 +356,7 @@ MainMemory _mem (
     1'b0, 
     1'b1, 
     _ex_mem_alu_result >> 2, 
-    _ex_mem_write_data, 
+    {_ex_mem_mem_write, _ex_mem_alu_result, _ex_mem_write_data}, 
     _mem_data
 );
 

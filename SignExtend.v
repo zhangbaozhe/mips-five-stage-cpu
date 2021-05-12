@@ -14,7 +14,7 @@ module SignExtend (
 );
 
 /* Inputs declaration */
-wire signed [31:0] data;
+wire signed [15:0] data;
 
 /* Main function */
 always @(*) begin

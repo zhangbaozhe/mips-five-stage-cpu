@@ -11,7 +11,7 @@
 module Suber (
     input [31:0] data1, 
     input [31:0] data2, 
-    output reg [31:0] result
+    output reg [31:0] result,
     output reg zero, 
     output reg neg
 );
@@ -23,9 +23,8 @@ wire signed [31:0] data2;
 /* Main function */
 always @(*) begin
     result = data1 - data2;
+    zero = (result == 32'b0);
+    neg  = (result < 0);
 end
-
-assign zero = (result == 32'b0);
-assign neg  = (result < 0);
 
 endmodule

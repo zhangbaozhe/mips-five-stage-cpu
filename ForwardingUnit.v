@@ -27,7 +27,7 @@ module ForwardingUnit (
     input [4:0] ID_EX_RegisterRs, 
     input [4:0] ID_EX_RegisterRt, 
     output reg [1:0] ForwardA, 
-    output reg [1:0] ForwardB
+    output reg [1:0] ForwardB,
     output reg IsForwarding
 );
 
