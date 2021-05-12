@@ -356,7 +356,7 @@ MainMemory _mem (
     1'b0, 
     1'b1, 
     _ex_mem_alu_result >> 2, 
-    {_ex_mem_mem_write, _ex_mem_alu_result, _ex_mem_write_data}, 
+    _ex_mem_write_data, 
     _mem_data
 );
 
