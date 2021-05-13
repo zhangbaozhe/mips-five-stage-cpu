@@ -17,14 +17,17 @@
  * 
  */
 
+`ifndef _BRANCH_FORWARD
+`define _BRANCH_FORWARD
+
 module BranchForward (
-    input [1:0] Branch, 
-    input [4:0] EX_MEM_RegisterRd, 
-    input [4:0] MEM_WB_RegisterRd, 
-    input [4:0] IF_ID_RegisterRs, 
-    input [4:0] IF_ID_RegisterRt, 
-    output reg [1:0] BranchForwardA, 
-    output reg [1:0] BranchForwardB
+    input [1:0]         Branch, 
+    input [4:0]         EX_MEM_RegisterRd, 
+    input [4:0]         MEM_WB_RegisterRd, 
+    input [4:0]         IF_ID_RegisterRs, 
+    input [4:0]         IF_ID_RegisterRt, 
+    output reg [1:0]    BranchForwardA, 
+    output reg [1:0]    BranchForwardB
 );
 
 always @(*) begin
@@ -33,16 +36,16 @@ always @(*) begin
         && (EX_MEM_RegisterRd == IF_ID_RegisterRs)
         && (EX_MEM_RegisterRd != 5'b00000))
         begin
-            BranchForwardA = 2'b10;
-            BranchForwardB = 2'b00;
+            BranchForwardA <= 2'b10;
+            BranchForwardB <= 2'b00;
         end
 
     else if ((Branch != 2'b00)
         && (EX_MEM_RegisterRd == IF_ID_RegisterRt)
         && (EX_MEM_RegisterRd != 5'b00000))
         begin
-            BranchForwardA = 2'b00;
-            BranchForwardB = 2'b10;
+            BranchForwardA <= 2'b00;
+            BranchForwardB <= 2'b10;
         end
 
     /* MEM hazard */
@@ -50,22 +53,23 @@ always @(*) begin
         && (MEM_WB_RegisterRd == IF_ID_RegisterRs)
         && (MEM_WB_RegisterRd != 5'b00000))
         begin
-            BranchForwardA = 2'b01;
-            BranchForwardB = 2'b00;
+            BranchForwardA <= 2'b01;
+            BranchForwardB <= 2'b00;
         end
 
     else if ((Branch != 2'b00)
         && (MEM_WB_RegisterRd == IF_ID_RegisterRt)
         && (MEM_WB_RegisterRd != 5'b00000))
         begin
-            BranchForwardA = 2'b00;
-            BranchForwardB = 2'b01;
+            BranchForwardA <= 2'b00;
+            BranchForwardB <= 2'b01;
         end
 
     else begin
-        BranchForwardA = 2'b00;
-        BranchForwardB = 2'b00;
+        BranchForwardA <= 2'b00;
+        BranchForwardB <= 2'b00;
     end
 end
 
 endmodule
+`endif

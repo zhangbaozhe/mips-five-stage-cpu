@@ -19,23 +19,28 @@
  * Basically, some stalls will save situations like this, which 
  * will be controled in the hazard unit. 
  */
+ 
+`ifndef _BRANCH_UNIT
+`define _BRANCH_UNIT
 
 module BranchUnit (
-    input [1:0] Branch, 
-    input zero, 
-    output reg PCSrc
+    input [1:0]         Branch, 
+    input               zero, 
+    output reg          PCSrc
 );
 
-always @(*) begin
-    if (Branch != 2'b00)
-    begin
-        if (zero == 1)
-            PCSrc = 1;
+    always @(*) begin
+        if (Branch != 2'b00)
+        begin
+            if (zero == 1)
+                PCSrc <= 1;
+            else 
+                PCSrc <= 0;
+        end
         else 
-            PCSrc = 0;
+            PCSrc <= 0;
     end
-    else 
-        PCSrc = 0;
-end
 
 endmodule
+
+`endif

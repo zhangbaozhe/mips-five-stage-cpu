@@ -12,15 +12,38 @@
 `include "CPU.v"
 
 module top_module;
-    reg CLK;
+
+    integer cycle = 0;
+    reg CLK = 0;
     initial begin
         forever begin
-            CLK = 0;
             #1 CLK = ~CLK;
+            if (CLK)
+                cycle = cycle + 1;
+            // $display(CLK);
         end
     end
+    initial
+ begin
+    $dumpfile("cpu_tb.vcd");
+    $dumpvars(0, _cpu);
+ end
 
     CPU _cpu (CLK);
+    integer i;
+    always @(*) begin
+        if (_cpu._ins_ram.DATA == 32'hffff_ffff) begin
+            $display("CYCLE: \t %d", cycle + 4);
+            #10 
+            $display("ADDRESS \t DATA \t");
+            for (i = 0; i < 511; i = i+1) begin
+                $display("%x \t %b \t", 
+                i * 4, 
+                _cpu._mem.DATA_RAM[i]);
+            end
+            $finish;
+        end 
+    end
 
 
 

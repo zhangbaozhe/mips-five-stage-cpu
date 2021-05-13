@@ -48,6 +48,12 @@ wire [4:0] EX_MEM_RegisterRd;
 wire [4:0] IF_ID_RegisterRs;
 wire [4:0] IF_ID_RegisterRt;
 
+initial begin
+    PCWrite = 1;
+    IF_ID_Write = 1;
+    Stall = 0;
+end
+
 always @(*) begin
     /* this handles (1) and one cycle in (3) */
     if (ID_EX_MemRead 
