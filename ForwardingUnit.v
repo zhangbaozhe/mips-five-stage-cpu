@@ -43,6 +43,20 @@ module ForwardingUnit (
     wire [4:0]          ID_EX_RegisterRt;
 
     always @(*) begin
+        /* BUG FIXED: allow two forwarding in a single command.
+            e.g. 
+                sub $v0,    $a0,    $a1
+                    ^^^                     MEM
+                sub $v1,    $a1,    $a0
+                    ^^^                     EX
+                sub $a2,    $v1,    $v0
+                            ^^^     ^^^
+         */
+        
+        /* defaults */ 
+        ForwardA <= 2'b00;
+        ForwardB <= 2'b00;
+        IsForwarding <= 1'b0;
         
         /* EX hazard */ 
         if (EX_MEM_RegWrite 
@@ -50,22 +64,22 @@ module ForwardingUnit (
             && (EX_MEM_RegisterRd == ID_EX_RegisterRs))
             begin
                 ForwardA <= 2'b10;
-                ForwardB <= 2'b00;
+                // ForwardB <= 2'b00;
                 IsForwarding <= 1'b1;
             end
 
         
-        else if (EX_MEM_RegWrite 
+        if (EX_MEM_RegWrite 
             && (EX_MEM_RegisterRd != 5'b00000) 
             && (EX_MEM_RegisterRd == ID_EX_RegisterRt))
             begin
-                ForwardA <= 2'b00;
+                // ForwardA <= 2'b00;
                 ForwardB <= 2'b10;
                 IsForwarding <= 1'b1;
             end
 
         /* MEM hazard */
-        else if (MEM_WB_RegWirte
+        if (MEM_WB_RegWirte
             && (MEM_WB_RegisterRd != 5'b00000)
             && ! (EX_MEM_RegWrite 
                 && (EX_MEM_RegisterRd != 5'b00000)
@@ -73,27 +87,23 @@ module ForwardingUnit (
             && (MEM_WB_RegisterRd == ID_EX_RegisterRs))
             begin
                 ForwardA <= 2'b01;
-                ForwardB <= 2'b00;
+                // ForwardB <= 2'b00;
                 IsForwarding <= 1'b1;
             end
 
-        else if (MEM_WB_RegWirte
+        if (MEM_WB_RegWirte
             && (MEM_WB_RegisterRd != 5'b00000)
             && ! (EX_MEM_RegWrite 
                 && (EX_MEM_RegisterRd != 5'b00000)
                 && (EX_MEM_RegisterRd == ID_EX_RegisterRt))
             && (MEM_WB_RegisterRd == ID_EX_RegisterRt))
             begin
-                ForwardA <= 2'b00;
+                // ForwardA <= 2'b00;
                 ForwardB <= 2'b01;
                 IsForwarding <= 1'b1;
+                $display("MEM forwarding");
             end
-        
-        else begin
-            ForwardA <= 2'b00;
-            ForwardB <= 2'b00;
-            IsForwarding <= 1'b0;
-        end
+    
 
     end
 

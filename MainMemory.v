@@ -55,11 +55,11 @@ module MainMemory
   always @(posedge CLOCK) begin : DATA_blockRam
     if (c$app_arg & ENABLE) begin
       /* $display("I am writing"); */
-      DATA_RAM[(wild_0)] <= ds[31:0];
+      DATA_RAM[(wild_0)] = ds[31:0];
     end
     if (ENABLE) begin
       /* $display("I am reading"); */
-      DATA <= DATA_RAM[(wild)];
+      DATA = DATA_RAM[(wild)];
     end
   end
   // blockRam end

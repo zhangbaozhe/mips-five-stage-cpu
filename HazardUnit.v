@@ -24,72 +24,78 @@
  *      lw  $1,     20($2)
  *      # 2-cycle stall (3)
  *      beq $1,     $2, address
- * 
+ *
+ *
  */
 
+`ifndef _HAZARD_UNIT
+`define _HAZARD_UNIT
+
 module HazardUnit (
-    input ID_EX_MemRead, 
-    input [1:0] Branch, 
-    input [4:0] ID_EX_RegisterRd, 
-    input [4:0] ID_EX_RegisterRt, 
-    input [4:0] EX_MEM_RegisterRd, 
-    input [4:0] IF_ID_RegisterRs, 
-    input [4:0] IF_ID_RegisterRt, 
-    output reg PCWrite, 
-    output reg IF_ID_Write, 
-    output reg Stall
+    input               ID_EX_MemRead, 
+    input [1:0]         Branch, 
+    input [4:0]         ID_EX_RegisterRd, 
+    input [4:0]         ID_EX_RegisterRt, 
+    input [4:0]         EX_MEM_RegisterRd, 
+    input [4:0]         IF_ID_RegisterRs, 
+    input [4:0]         IF_ID_RegisterRt, 
+    output reg          PCWrite, 
+    output reg          IF_ID_Write, 
+    output reg          Stall
 );
 
-wire ID_EX_MemRead;
-wire [1:0] Branch;
-wire [4:0] ID_EX_RegisterRd;
-wire [4:0] ID_EX_RegisterRt;
-wire [4:0] EX_MEM_RegisterRd;
-wire [4:0] IF_ID_RegisterRs;
-wire [4:0] IF_ID_RegisterRt;
+    wire                ID_EX_MemRead;
+    wire [1:0]          Branch;
+    wire [4:0]          ID_EX_RegisterRd;
+    wire [4:0]          ID_EX_RegisterRt;
+    wire [4:0]          EX_MEM_RegisterRd;
+    wire [4:0]          IF_ID_RegisterRs;
+    wire [4:0]          IF_ID_RegisterRt;
 
-initial begin
-    PCWrite = 1;
-    IF_ID_Write = 1;
-    Stall = 0;
-end
-
-always @(*) begin
-    /* this handles (1) and one cycle in (3) */
-    if (ID_EX_MemRead 
-        && ((ID_EX_RegisterRt == IF_ID_RegisterRs)
-             || (ID_EX_RegisterRt == IF_ID_RegisterRt)))
-    begin
-        PCWrite = 0;
-        IF_ID_Write = 0;
-        Stall = 1;
-    end
-    /* this handles (2) */
-    else if ((Branch != 2'b00) 
-             && ((ID_EX_RegisterRd == IF_ID_RegisterRs)
-                 || (ID_EX_RegisterRd == IF_ID_RegisterRt)))
-    begin
-        PCWrite = 0;
-        IF_ID_Write = 0;
-        Stall = 1;
-    end
-    /* this handles the second cycle in (3) */
-    else if ((Branch != 2'b00) 
-             && ((EX_MEM_RegisterRd == IF_ID_RegisterRs)
-                 || (EX_MEM_RegisterRd == IF_ID_RegisterRt))) 
-    begin
-        PCWrite = 0;
-        IF_ID_Write = 0;
-        Stall = 1;
-    end
-    else begin
+    initial begin
         PCWrite = 1;
         IF_ID_Write = 1;
         Stall = 0;
     end
-end
+
+    always @(*) begin
+        /* this handles (1) and one cycle in (3) */
+        if (ID_EX_MemRead 
+            && ((ID_EX_RegisterRt == IF_ID_RegisterRs)
+                || (ID_EX_RegisterRt == IF_ID_RegisterRt)))
+        begin
+            PCWrite = 0;
+            IF_ID_Write = 0;
+            Stall = 1;
+        end
+        /* this handles (2) */
+        else if ((Branch != 2'b00) 
+                && ((ID_EX_RegisterRd == IF_ID_RegisterRs)
+                    || (ID_EX_RegisterRd == IF_ID_RegisterRt)))
+        begin
+            PCWrite = 0;
+            IF_ID_Write = 0;
+            Stall = 1;
+        end
+        /* this handles the second cycle in (3) */
+        else if ((Branch != 2'b00) 
+                && ((EX_MEM_RegisterRd == IF_ID_RegisterRs)
+                    || (EX_MEM_RegisterRd == IF_ID_RegisterRt))) 
+        begin
+            PCWrite = 0;
+            IF_ID_Write = 0;
+            Stall = 1;
+        end
+        else begin
+            PCWrite = 1;
+            IF_ID_Write = 1;
+            Stall = 0;
+        end
+    end
 
 endmodule 
+
+`endif
 /* TODO: 
     The if logic may cause some trouble 
     e.g. 

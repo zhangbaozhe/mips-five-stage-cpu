@@ -5,3 +5,4 @@ instruction.bin
 test
 cpu_test
 cpu_tb
+.DS_store

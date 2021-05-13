@@ -278,6 +278,7 @@ module CPU (
     /* ALU */ 
     reg [31:0]          _alu_src_a;
     reg [31:0]          _alu_src_b;
+    reg [31:0]          _before_alu_src_b;
     wire                _alu_zero;
     wire [31:0]         _alu_result;
 
@@ -290,9 +291,7 @@ module CPU (
     );
 
     /* Forwarding Unit */ 
-    /* TODO: 
-        declaration
-        */
+    
     wire [1:0]          _forward_a;
     wire [1:0]          _forward_b;
     wire                _is_forwarding;
@@ -326,16 +325,17 @@ module CPU (
         case (_forward_b)
             2'b00: begin
                 mux_temp = (_id_ex_alu_src) ? _id_ex_extended_data : _id_ex_read_data2;
-                _alu_src_b = mux_temp;
+                _before_alu_src_b = mux_temp;
             end
             2'b10:
-                _alu_src_b = _ex_mem_alu_result;
+                _before_alu_src_b = _ex_mem_alu_result;
             2'b01:
-                _alu_src_b = _wb_data;
+                _before_alu_src_b = _wb_data;
         endcase
 
+        _alu_src_b = (_id_ex_mem_write) ? _id_ex_extended_data : _before_alu_src_b;
         /* Green part in the map */ 
-        ex_mem_write_data_in = (_is_forwarding) ? _alu_src_b : _id_ex_read_data2;
+        ex_mem_write_data_in = (_is_forwarding) ? _before_alu_src_b : _id_ex_read_data2;
 
         ex_mem_register_rd_in = (_id_ex_reg_dst) ? _id_ex_register_rt : _id_ex_register_rd;
     end
