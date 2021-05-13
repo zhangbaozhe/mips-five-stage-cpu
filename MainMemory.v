@@ -57,10 +57,11 @@ module MainMemory
       /* $display("I am writing"); */
       DATA_RAM[(wild_0)] = ds[31:0];
     end
-    if (ENABLE) begin
-      /* $display("I am reading"); */
-      DATA = DATA_RAM[(wild)];
-    end
+    
+  end
+  always @(*) begin
+    /* reading not affetced by CLK */
+    DATA = DATA_RAM[(wild)];
   end
   // blockRam end
 

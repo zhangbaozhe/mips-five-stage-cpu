@@ -2,7 +2,5 @@ Project 3.pdf
 cpu.pdf
 *.vcd
 instruction.bin
-test
-cpu_test
 cpu_tb
 .DS_store

@@ -35,41 +35,41 @@ module ALU (
     wire signed [31:0]  data2;
     wire [3:0]          ALUControl;
 
-    always @(data1, data2, ALUControl) begin
+    always @(*) begin
         case (ALUControl) 
             /* AND */
             4'b0000: begin
-                result <= data1 & data2;
+                result = data1 & data2;
             end
 
             /* OR */
             4'b0001: begin
-                result <= data1 | data2;
+                result = data1 | data2;
             end
 
             /* add */
             4'b0010: begin
-                result <= data1 + data2;
+                result = data1 + data2;
             end
 
             /* subtract */
             4'b0110: begin
-                result <= data1 - data2;
+                result = data1 - data2;
             end
 
             /* set on less than */
             4'b0111: begin
-                result <= (data1 < data2);
+                result = (data1 < data2);
             end
 
             /* NOR */
             4'b1100: begin
-                result <= ~(data1 | data2);
+                result = ~(data1 | data2);
             end
 
             /* XOR */
             4'b1101: begin
-                result <= data1 ^ data2;
+                result = data1 ^ data2;
             end
         endcase
 

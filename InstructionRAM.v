@@ -43,7 +43,7 @@ module InstructionRAM
     $display("RAM[1]: \t %32b", RAM[1]);
   end
 
-  always @(posedge CLOCK) begin : InstructionRAM_blockRamFile
+  always @(*) begin : InstructionRAM_blockRamFile
     if (1'b0 & ENABLE) begin
       RAM[(wild_0)] <= DATA_0[31:0];
     end

@@ -24,9 +24,9 @@ module Suber (
 
     /* Main function */
     always @(*) begin
-        result <= data1 - data2;
-        zero <= (result == 32'b0);
-        neg  <= (result < 0);
+        result = data1 - data2;
+        zero = (result == 32'b0);
+        neg  = (result < 0);
     end
 
 endmodule
