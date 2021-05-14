@@ -193,7 +193,7 @@ module ControlUnit (
                             MemWrite <= 0;
                             MemRead <= 0;
                             Branch <= 2'b00;
-                            ALUControl <= 4'b0000; 
+                            ALUControl <= 4'b0111; 
                             ALUSrc <= 0;
                             RegDst <= 0;
                             Jump <= 0;

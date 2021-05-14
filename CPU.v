@@ -94,7 +94,7 @@ module CPU (
     wire [31:0]         _read_data2;
     RegisterFile _reg_file (
         clk, 
-        _reg_write, 
+        _mem_wb_reg_write, 
         _if_id_ins_out[25:21], 
         _if_id_ins_out[20:16],
         _write_reg, 
@@ -158,6 +158,7 @@ module CPU (
     HazardUnit _hazard_unit (
         _id_ex_mem_read, 
         _branch, 
+        _delay, 
         _id_ex_register_rd, 
         _id_ex_register_rt, 
         _ex_mem_register_rd, 
@@ -242,6 +243,7 @@ module CPU (
     wire [4:0]          _id_ex_register_rs;
     /* wire [4:0] _id_ex_register_rt; */
     /* wire [4:0] _id_ex_register_rd; */
+    wire                _id_ex_pc_src;
 
     ID_EX _id_ex (
         clk, 
@@ -250,6 +252,7 @@ module CPU (
         _mem_write, 
         _mem_read, 
         _branch, 
+        _pc_src, 
         _alu_control, 
         _alu_src, 
         _reg_dst, 
@@ -264,6 +267,7 @@ module CPU (
         _id_ex_mem_write, 
         _id_ex_mem_read, 
         _id_ex_branch, 
+        _id_ex_pc_src, 
         _id_ex_alu_control, 
         _id_ex_alu_src, 
         _id_ex_reg_dst, 
@@ -273,6 +277,13 @@ module CPU (
         _id_ex_register_rs, 
         _id_ex_register_rt, 
         _id_ex_register_rd
+    );
+
+    wire                _delay;
+    BranchDelay _branch_delay (
+        _id_ex_branch, 
+        _id_ex_pc_src, 
+        _delay
     );
 
     /* ALU */ 

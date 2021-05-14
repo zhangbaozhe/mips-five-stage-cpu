@@ -33,7 +33,8 @@
 
 module HazardUnit (
     input               ID_EX_MemRead, 
-    input [1:0]         Branch, 
+    input [1:0]         Branch,
+    input               Delay,  
     input [4:0]         ID_EX_RegisterRd, 
     input [4:0]         ID_EX_RegisterRt, 
     input [4:0]         EX_MEM_RegisterRd, 
@@ -46,6 +47,7 @@ module HazardUnit (
 
     wire                ID_EX_MemRead;
     wire [1:0]          Branch;
+    wire                Delay;
     wire [4:0]          ID_EX_RegisterRd;
     wire [4:0]          ID_EX_RegisterRt;
     wire [4:0]          EX_MEM_RegisterRd;
@@ -91,6 +93,8 @@ module HazardUnit (
             IF_ID_Write = 1;
             Stall = 0;
         end
+        if (Delay) 
+            Stall = 1;
     end
 
 endmodule 

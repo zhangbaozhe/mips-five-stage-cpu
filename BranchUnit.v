@@ -30,17 +30,40 @@ module BranchUnit (
 );
 
     always @(*) begin
-        if (Branch != 2'b00)
-        begin
-            if (zero == 1)
-                PCSrc <= 1;
-            else 
-                PCSrc <= 0;
-        end
-        else 
-            PCSrc <= 0;
+        case (Branch) 
+            /* not branch */
+            2'b00: begin
+                PCSrc = 1'b0;
+            end
+            /* beq */
+            2'b01: begin
+                if (zero) 
+                    PCSrc = 1'b1;
+            end
+            /* bne */
+            2'b10: begin
+                if (!zero) 
+                    PCSrc = 1'b1;
+            end
+        endcase
+        // PCSrc = 1'b0;
     end
 
+endmodule
+
+module BranchDelay (
+    input [1:0]         ID_EX_Branch, 
+    input               ID_EX_PCSrc, 
+    output reg          Delay
+);
+    wire [1:0]          ID_EX_Branch; 
+    wire                ID_EX_PCSrc;
+    always @(*) begin
+        if (ID_EX_Branch != 2'b00 && ID_EX_PCSrc)
+            Delay = 1'b1;
+        else
+            Delay = 1'b0;
+    end
 endmodule
 
 `endif

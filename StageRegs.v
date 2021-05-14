@@ -91,6 +91,7 @@ module ID_EX (
     input               MemWrite, 
     input               MemRead, 
     input [1:0]         Branch, 
+    input               PCSrc, 
     input [3:0]         ALUControl,
     input               ALUSrc, 
     input               RegDst, 
@@ -105,6 +106,7 @@ module ID_EX (
     output reg          MemWrite_OUT, 
     output reg          MemRead_OUT, 
     output reg [1:0]    Branch_OUT, 
+    output reg          PCSrc_OUT, 
     output reg [3:0]    ALUControl_OUT, 
     output reg          ALUSrc_OUT, 
     output reg          RegDst_OUT, 
@@ -124,6 +126,7 @@ module ID_EX (
     wire                MemWrite; 
     wire                MemRead; 
     wire [1:0]          Branch; 
+    wire                PCSrc;
     wire [3:0]          ALUControl;
     wire                ALUSrc; 
     wire                RegDst; 
@@ -142,6 +145,7 @@ module ID_EX (
         MemWrite_OUT <= MemWrite; 
         MemRead_OUT <= MemRead;
         Branch_OUT <= Branch;
+        PCSrc_OUT <= PCSrc;
         ALUControl_OUT <= ALUControl;
         ALUSrc_OUT <= ALUSrc;
         RegDst_OUT <= RegDst;
