@@ -23,6 +23,8 @@ module ControlUnit (
     output reg          ALUSrc, 
     output reg          RegDst, 
     output reg          Jump, 
+    output reg          Jal, 
+    output reg          Jr, 
     output reg          ShiftSrc // 1 -> shamt, 0 -> rs
 ); 
     /* 
@@ -61,6 +63,9 @@ module ControlUnit (
         ALUSrc <= 1'b0;
         RegDst <= 1'b0;
         Jump <= 1'b0;
+        Jal <= 0;
+        Jr <= 0;
+        ShiftSrc <= 0;
 
         /* FROM OLD, WITH BUG
         if (stall) begin 
@@ -90,6 +95,7 @@ module ControlUnit (
                         ALUSrc <= 0;
                         RegDst <= 0;
                         Jump <= 0;
+                        Jal <= 0;
                         ShiftSrc <= 0;
                     end
 
@@ -104,6 +110,7 @@ module ControlUnit (
                         ALUSrc <= 0;
                         RegDst <= 0;
                         Jump <= 0;
+                        Jal <= 0;
                         ShiftSrc <= 0;
                         
                     end
@@ -119,6 +126,7 @@ module ControlUnit (
                         ALUSrc <= 0;
                         RegDst <= 0;
                         Jump <= 0;
+                        Jal <= 0;
                         ShiftSrc <= 0;
                     end
 
@@ -133,6 +141,7 @@ module ControlUnit (
                         ALUSrc <= 0;
                         RegDst <= 0;
                         Jump <= 0;
+                        Jal <= 0;
                         ShiftSrc <= 0;
                         
                     end
@@ -148,6 +157,7 @@ module ControlUnit (
                         ALUSrc <= 0;
                         RegDst <= 0;
                         Jump <= 0;
+                        Jal <= 0;
                         ShiftSrc <= 0;
                         
                     end
@@ -163,6 +173,7 @@ module ControlUnit (
                         ALUSrc <= 0;
                         RegDst <= 0;
                         Jump <= 0;
+                        Jal <= 0;
                         ShiftSrc <= 0;
                         
                     end
@@ -178,6 +189,7 @@ module ControlUnit (
                         ALUSrc <= 0;
                         RegDst <= 0;
                         Jump <= 0;
+                        Jal <= 0;
                         ShiftSrc <= 0;
                         
                     end
@@ -193,6 +205,7 @@ module ControlUnit (
                         ALUSrc <= 0;
                         RegDst <= 0;
                         Jump <= 0;
+                        Jal <= 0;
                         ShiftSrc <= 0;
                         
                     end
@@ -208,6 +221,7 @@ module ControlUnit (
                         ALUSrc <= 0;
                         RegDst <= 0;
                         Jump <= 0;
+                        Jal <= 0;
                         ShiftSrc <= 0;
                         
                     end
@@ -223,6 +237,7 @@ module ControlUnit (
                         ALUSrc <= 0;
                         RegDst <= 0;
                         Jump <= 0;
+                        Jal <= 0;
                         ShiftSrc <= 1;
                     end
 
@@ -237,6 +252,7 @@ module ControlUnit (
                         ALUSrc <= 0;
                         RegDst <= 0;
                         Jump <= 0;
+                        Jal <= 0;
                         ShiftSrc <= 0;
                     end
 
@@ -251,6 +267,7 @@ module ControlUnit (
                         ALUSrc <= 0;
                         RegDst <= 0;
                         Jump <= 0;
+                        Jal <= 0;
                         ShiftSrc <= 1;
                     end
 
@@ -265,6 +282,7 @@ module ControlUnit (
                         ALUSrc <= 0;
                         RegDst <= 0;
                         Jump <= 0;
+                        Jal <= 0;
                         ShiftSrc <= 0;
                     end
 
@@ -279,6 +297,7 @@ module ControlUnit (
                         ALUSrc <= 0;
                         RegDst <= 0;
                         Jump <= 0;
+                        Jal <= 0;
                         ShiftSrc <= 1;
                     end
 
@@ -293,8 +312,24 @@ module ControlUnit (
                         ALUSrc <= 0;
                         RegDst <= 0;
                         Jump <= 0;
+                        Jal <= 0;
                         ShiftSrc <= 0;
                     end
+
+                    /* jr */
+                    6'h8: begin
+                        MemtoReg <= 0;
+                        RegWrite <= 0;
+                        MemWrite <= 0;
+                        MemRead <= 0;
+                        Branch <= 2'b11;
+                        ALUControl <= 4'b1111; 
+                        ALUSrc <= 0;
+                        RegDst <= 0;
+                        Jump <= 0;
+                        Jal <= 0;
+                        Jr <= 1
+                        ShiftSrc <= 0;
                 endcase
             end
 
@@ -309,6 +344,7 @@ module ControlUnit (
                 ALUSrc <= 0;
                 RegDst <= 0;
                 Jump <= 0;
+                Jal <= 0;
                 ShiftSrc <= 0;
                 
             end
@@ -324,6 +360,7 @@ module ControlUnit (
                 ALUSrc <= 0;
                 RegDst <= 0;
                 Jump <= 0;
+                Jal <= 0;
                 ShiftSrc <= 0;
                 
             end
@@ -338,6 +375,7 @@ module ControlUnit (
                 ALUSrc <= 1; 
                 RegDst <= 1;
                 Jump <= 0;
+                Jal <= 0;
                 ShiftSrc <= 0;
                 
             end
@@ -353,6 +391,7 @@ module ControlUnit (
                 ALUSrc <= 1; 
                 RegDst <= 1;
                 Jump <= 0;
+                Jal <= 0;
                 ShiftSrc <= 0;
                 
             end
@@ -368,6 +407,7 @@ module ControlUnit (
                 ALUSrc <= 1; 
                 RegDst <= 1;
                 Jump <= 0;
+                Jal <= 0;
                 ShiftSrc <= 0;
                 
             end
@@ -383,6 +423,7 @@ module ControlUnit (
                 ALUSrc <= 1; 
                 RegDst <= 1;
                 Jump <= 0;
+                Jal <= 0;
                 ShiftSrc <= 0;
                 
             end
@@ -398,6 +439,7 @@ module ControlUnit (
                 ALUSrc <= 1; 
                 RegDst <= 1;
                 Jump <= 0;
+                Jal <= 0;
                 ShiftSrc <= 0;
                 
             end
@@ -414,6 +456,7 @@ module ControlUnit (
                 ALUSrc <= 1; 
                 RegDst <= 1;
                 Jump <= 0;
+                Jal <= 0;
                 ShiftSrc <= 0;
                 
             end
@@ -429,9 +472,41 @@ module ControlUnit (
                 ALUSrc <= 1; 
                 RegDst <= 1;
                 Jump <= 0;
+                Jal <= 0;
                 ShiftSrc <= 0;
                 
             end
+
+            /* j */
+            6'h2: begin
+                MemtoReg <= 0;
+                RegWrite <= 0;
+                MemWrite <= 0;
+                MemRead <= 0;
+                Branch <= 2'b00;
+                ALUControl <= 4'b1111;
+                ALUSrc <= 1; 
+                RegDst <= 1;
+                Jump <= 1;
+                Jal <= 0;
+                ShiftSrc <= 0;
+            end
+                
+            /* jal */
+            6'h3: begin
+                MemtoReg <= 0;
+                RegWrite <= 1;
+                MemWrite <= 0;
+                MemRead <= 0;
+                Branch <= 2'b00;
+                ALUControl <= 4'b0010;
+                ALUSrc <= 1; 
+                RegDst <= 1;
+                Jump <= 1;
+                Jal <= 1;
+                ShiftSrc <= 0;
+            end
+
         endcase
     end
 

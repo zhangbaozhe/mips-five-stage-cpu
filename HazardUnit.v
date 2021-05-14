@@ -18,12 +18,15 @@
  * stall the pipeline. 
  * Besides, there are two other types of stall to be handled.
  *      add $1,     $2, $3
- *      # 1-cycle stall (2)
+ *      # 1-cycle (or 2-cycle) stall (2)
  *      beq $1,     $2, address
  * 
  *      lw  $1,     20($2)
  *      # 2-cycle stall (3)
  *      beq $1,     $2, address
+ * In addition, for JR instructions, the implementation is much similar, 
+ * e.g., there will be a 2-cycle stall between the possible instructions.
+ * Then a forwarding will take place.
  *
  *
  */
@@ -80,6 +83,7 @@ module HazardUnit (
             Stall = 1;
         end
         /* this handles the second cycle in (3) */
+        /* jr will stall for 2 cycles whatever */
         else if ((Branch != 2'b00) 
                 && ((EX_MEM_RegisterRd == IF_ID_RegisterRs)
                     || (EX_MEM_RegisterRd == IF_ID_RegisterRt))) 

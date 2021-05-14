@@ -131,6 +131,7 @@ module CPU (
     wire                _alu_src;
     wire                _reg_dst;
     wire                _jump;
+    wire                _jal;
     ControlUnit _control_unit (
         _if_id_ins_out, 
         _mem_to_reg, 
@@ -142,6 +143,7 @@ module CPU (
         _alu_src, 
         _reg_dst,
         _jump, 
+        _jal, 
         _shift_src
     );
 
@@ -243,8 +245,22 @@ module CPU (
 
     /* mux before PC */
     /* TODO: jump */
+    reg [31:0]         _jump_addr;
     always @(*) begin
-        _pc_in <= (_pc_src) ? _pcBranch : _pc4;
+        _jump_addr = {_if_id_pc_out[31:28], _if_id_ins_out[25:0]};
+        _pc_in = _pc4;
+        case (_pc_src)
+            1'b1:
+                _pc_in = _pc_src;
+            1'b0: begin
+                case (_jump) 
+                    1'b0:
+                        _pc_in = _pc4;
+                    1'b1:
+                        _pc_in = _jump_addr;
+                endcase
+            end
+        endcase
     end
 
     /* ID_EX */
@@ -272,6 +288,12 @@ module CPU (
     wire                _id_ex_pc_src;
     wire [4:0]          _id_ex_shamt;
     wire                _id_ex_shift_src;
+    wire [31:0]         _new_read_data1;
+    wire [31:0]         _new_read_data2;
+    wire [4:0]          _new_if_id_register_rd;
+    assign _new_read_data1 = (_jal) ? 32'd0 : _read_data1;
+    assign _new_read_data2 = (_jal) ? _if_id_pc_out : _read_data2;
+    assign _new_if_id_register_rd = (_jal) ? 5'd31 : _if_id_register_rd;
 
     ID_EX _id_ex (
         clk, 
@@ -285,12 +307,12 @@ module CPU (
         _alu_control, 
         _alu_src, 
         _reg_dst, 
-        _read_data1, 
-        _read_data2, 
+        _new_read_data1, 
+        _new_read_data2, 
         _signed_data, 
         _if_id_register_rs, 
         _if_id_register_rt, 
-        _if_id_register_rd, 
+        _new_if_id_register_rd, 
         _shamt, 
         _shift_src, 
         _id_ex_mem_to_reg, 
