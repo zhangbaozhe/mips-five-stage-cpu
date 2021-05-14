@@ -49,7 +49,7 @@ module ControlUnit (
     wire [31:0]         instruction;
     wire                stall;
 
-    always @(*) begin
+    always @(instruction) begin
         /* defaults */
         MemtoReg <= 1'b0;
         RegWrite <= 1'b1;

@@ -29,29 +29,35 @@ module BranchForward (
     output reg [1:0]    BranchForwardA, 
     output reg [1:0]    BranchForwardB
 );
+
+    wire [1:0]          Branch;
+    wire [4:0]          EX_MEM_RegisterRd;
+    wire [4:0]          MEM_WB_RegisterRd;
+    wire [4:0]          IF_ID_RegisterRs;
+    wire [4:0]          IF_ID_RegisterRt;
     
     always @(*) begin
         /* BUG FIXED: allow two forwardings happen in a single instruction */
 
         /* defaults */ 
-        BranchForwardA <= 2'b00;
-        BranchForwardB <= 2'b00;
+        BranchForwardA = 2'b00;
+        BranchForwardB = 2'b00;
         
         /* EX hazard */
         if ((Branch != 2'b00)
             && (EX_MEM_RegisterRd == IF_ID_RegisterRs)
             && (EX_MEM_RegisterRd != 5'b00000))
             begin
-                BranchForwardA <= 2'b10;
-                // BranchForwardB <= 2'b00;
+                BranchForwardA = 2'b10;
+                // BranchForwardB = 2'b00;
             end
 
         if ((Branch != 2'b00)
             && (EX_MEM_RegisterRd == IF_ID_RegisterRt)
             && (EX_MEM_RegisterRd != 5'b00000))
             begin
-                // BranchForwardA <= 2'b00;
-                BranchForwardB <= 2'b10;
+                // BranchForwardA = 2'b00;
+                BranchForwardB = 2'b10;
             end
 
         /* MEM hazard */
@@ -59,16 +65,16 @@ module BranchForward (
             && (MEM_WB_RegisterRd == IF_ID_RegisterRs)
             && (MEM_WB_RegisterRd != 5'b00000))
             begin
-                BranchForwardA <= 2'b01;
-                // BranchForwardB <= 2'b00;
+                BranchForwardA = 2'b01;
+                // BranchForwardB = 2'b00;
             end
 
         if ((Branch != 2'b00)
             && (MEM_WB_RegisterRd == IF_ID_RegisterRt)
             && (MEM_WB_RegisterRd != 5'b00000))
             begin
-                // BranchForwardA <= 2'b00;
-                BranchForwardB <= 2'b01;
+                // BranchForwardA = 2'b00;
+                BranchForwardB = 2'b01;
             end
 
         
