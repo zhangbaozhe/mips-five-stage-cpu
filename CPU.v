@@ -141,7 +141,8 @@ module CPU (
         _alu_control, 
         _alu_src, 
         _reg_dst,
-        _jump
+        _jump, 
+        _shift_src
     );
 
     /* Hazard Detection Unit */
@@ -251,7 +252,9 @@ module CPU (
     assign _if_id_register_rt = _if_id_ins_out[20:16];
     wire [4:0]          _if_id_register_rd;
     assign _if_id_register_rd = _if_id_ins_out[15:11];
-
+    wire [4:0]          _shamt;
+    wire                _shift_src;
+    assign _shamt = _if_id_ins_out[10:6];
     wire                _id_ex_mem_to_reg;
     wire                _id_ex_reg_write;
     wire                _id_ex_mem_write;
@@ -267,6 +270,8 @@ module CPU (
     /* wire [4:0] _id_ex_register_rt; */
     /* wire [4:0] _id_ex_register_rd; */
     wire                _id_ex_pc_src;
+    wire [4:0]          _id_ex_shamt;
+    wire                _id_ex_shift_src;
 
     ID_EX _id_ex (
         clk, 
@@ -286,6 +291,8 @@ module CPU (
         _if_id_register_rs, 
         _if_id_register_rt, 
         _if_id_register_rd, 
+        _shamt, 
+        _shift_src, 
         _id_ex_mem_to_reg, 
         _id_ex_reg_write, 
         _id_ex_mem_write, 
@@ -300,7 +307,9 @@ module CPU (
         _id_ex_extended_data, 
         _id_ex_register_rs, 
         _id_ex_register_rt, 
-        _id_ex_register_rd
+        _id_ex_register_rd, 
+        _id_ex_shamt, 
+        _id_ex_shift_src
     );
 
     wire                _delay;
@@ -350,7 +359,7 @@ module CPU (
     always @(*) begin
         case (_forward_a)
             2'b00:
-                _alu_src_a = _id_ex_read_data1;
+                _alu_src_a = (_id_ex_shift_src) ? {27'd0, _id_ex_shamt} : _id_ex_read_data1;
             2'b10:
                 _alu_src_a = _ex_mem_alu_result;
             2'b01:

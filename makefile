@@ -1,4 +1,4 @@
-main:
+cpu_tb:
 	iverilog -o cpu_tb cpu_tb.v
 	vvp cpu_tb
 

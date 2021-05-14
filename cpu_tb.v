@@ -24,13 +24,15 @@ module top_module;
         end
     end
     initial
- begin
-    $dumpfile("cpu_tb.vcd");
-    $dumpvars(0, _cpu);
- end
+    begin
+        file = $fopen("RAM_OUTPUT", "w");
+        $dumpfile("cpu_tb.vcd");
+        $dumpvars(0, _cpu);
+    end
 
     CPU _cpu (CLK);
-    integer i;
+    integer i, file;
+    
     always @(*) begin
         if (_cpu._ins_ram.DATA == 32'hffff_ffff) begin
             $display("CYCLE: \t %d", cycle + 4);
@@ -40,7 +42,9 @@ module top_module;
                 $display("%x \t %b \t", 
                 i * 4, 
                 _cpu._mem.DATA_RAM[i]);
+                $fdisplayb(file, _cpu._mem.DATA_RAM[i]);
             end
+            $fclose(file);
             $finish;
         end 
     end

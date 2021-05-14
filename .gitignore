@@ -4,3 +4,4 @@ cpu.pdf
 instruction.bin
 cpu_tb
 .DS_store
+RAM_OUTPUT

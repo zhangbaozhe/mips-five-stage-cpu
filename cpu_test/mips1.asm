@@ -3,6 +3,7 @@
 # This test only aims to test the normal function of the cpu.
 # To test wheter the cpu can do other instructions correctly.
 
+
 addi $v0, $zero, 1
 addi $v1, $zero, 2
 addiu $a0, $zero, 20
@@ -28,30 +29,31 @@ nor $t8, $t1, $v1 # 1 in $t8
 xor $t9, $t1, $v1 # -2 in $t9
 xori $k0, $t1, -5 # 32'hffff0007 in $k0
 addu $k1, $t0, $v0 # 0 in $k1
-sw $v0, 0($zero)  # 1 in DATA_MEM[0]
-sw $v1, 4($zero)  # 2 in DATA_MEM[1]
-sw $a0, 8($zero)  # 20 in DATA_MEM[2]
-sw $a1, 12($zero)  # 16 in DATA_MEM[3]
-sw $a2, 16($zero) # 4 in DATA_MEM[4]
-sw $a3, 20($zero)  # 3 in DATA_MEM[5]
-sw $t0, 24($zero)  # -1 in DATA_MEM[6]
-sw $t1, 28($zero)  # -4 in DATA_MEM[7]
-sw $t2, 32($zero)  # 4 in DATA_MEM[8]
-sw $t3, 36($zero) # 0 in DATA_MEM[9]
-sw $t4, 40($zero)  # 1 in DATA_MEM[10]
-sw $t5, 44($zero)  # 32'hfffffff8 in DATA_MEM[11]
-sw $t6, 48($zero)  # 32'hfffffff0 in DATA_MEM[12]
-sw $t7, 52($zero)  # 32'h1fffffff in DATA_MEM[13]
-sw $s1, 56($zero) # 32'h0fffffff in DATA_MEM[14]
-sw $s2, 60($zero)  # 32'hfffffffe in DATA_MEM[15]
-sw $s3, 64($zero)  # 32'hfffffffc in DATA_MEM[16]
-sw $s4, 68($zero)  # 4 in DATA_MEM[17]
-sw $s5, 72($zero)  # 12 in DATA_MEM[18]
-sw $s6, 76($zero) # -2 in DATA_MEM[19]
-sw $s7, 80($zero)  # -1 in DATA_MEM[20]
-sw $t8, 84($zero)  # 1 in DATA_MEM[21]
-sw $t9, 88($zero)  # -2 in DATA_MEM[22] **********
-lw $gp, 52($zero) # 32'h1fffffff in $gp
-sw $k0, 92($zero)  # 32'hffff0007 in DATA_MEM[23]
-sw $k1, 96($zero) # 0 in DATA_MEM[24]
-sw $gp, 100($zero) # 32'h1fffffff in DATA_MEM[25]
+addi $fp, $zero, 0x10010000
+sw $v0, 0($fp)  # 1 in DATA_MEM[0]
+sw $v1, 4($fp)  # 2 in DATA_MEM[1]
+sw $a0, 8($fp)  # 20 in DATA_MEM[2]
+sw $a1, 12($fp)  # 16 in DATA_MEM[3]
+sw $a2, 16($fp) # 4 in DATA_MEM[4]
+sw $a3, 20($fp)  # 3 in DATA_MEM[5]
+sw $t0, 24($fp)  # -1 in DATA_MEM[6]
+sw $t1, 28($fp)  # -4 in DATA_MEM[7]
+sw $t2, 32($fp)  # 4 in DATA_MEM[8]
+sw $t3, 36($fp) # 0 in DATA_MEM[9]
+sw $t4, 40($fp)  # 1 in DATA_MEM[10]
+sw $t5, 44($fp)  # 32'hfffffff8 in DATA_MEM[11]
+sw $t6, 48($fp)  # 32'hfffffff0 in DATA_MEM[12]
+sw $t7, 52($fp)  # 32'h1fffffff in DATA_MEM[13]
+sw $s1, 56($fp) # 32'h0fffffff in DATA_MEM[14]
+sw $s2, 60($fp)  # 32'hfffffffe in DATA_MEM[15]
+sw $s3, 64($fp)  # 32'hfffffffc in DATA_MEM[16]
+sw $s4, 68($fp)  # 4 in DATA_MEM[17]
+sw $s5, 72($fp)  # 12 in DATA_MEM[18]
+sw $s6, 76($fp) # -2 in DATA_MEM[19]
+sw $s7, 80($fp)  # -1 in DATA_MEM[20]
+sw $t8, 84($fp)  # 1 in DATA_MEM[21]
+sw $t9, 88($fp)  # -2 in DATA_MEM[22] **********
+lw $gp, 52($fp) # 32'h1fffffff in $gp
+sw $k0, 92($fp)  # 32'hffff0007 in DATA_MEM[23]
+sw $k1, 96($fp) # 0 in DATA_MEM[24]
+sw $gp, 100($fp) # 32'h1fffffff in DATA_MEM[25]

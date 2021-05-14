@@ -71,6 +71,21 @@ module ALU (
             4'b1101: begin
                 result = data1 ^ data2;
             end
+
+            /* sll, sllv */
+            4'b0100: begin
+                result = data2 << data1; // deal with data1: shamt, rd
+            end
+
+            /* srl, srlv */
+            4'b0101: begin
+                result = data2 >> data1;
+            end
+
+            /* sra, srav */
+            4'b0011: begin
+                result = data2 >>> data1;
+            end
         endcase
 
         zero = (result == 32'b0);

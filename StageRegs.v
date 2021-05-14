@@ -102,6 +102,8 @@ module ID_EX (
     input [4:0]         IF_ID_RegisterRs,
     input [4:0]         IF_ID_RegisterRt, 
     input [4:0]         IF_ID_RegisterRd, 
+    input [4:0]         Shamt, 
+    input               ShiftSrc, 
     output reg          MemtoReg_OUT, 
     output reg          RegWrite_OUT, 
     output reg          MemWrite_OUT, 
@@ -116,7 +118,9 @@ module ID_EX (
     output reg [31:0]   extendedData_OUT, 
     output reg [4:0]    ID_EX_RegisterRs_OUT, 
     output reg [4:0]    ID_EX_RegisterRt_OUT, 
-    output reg [4:0]    ID_EX_RegisterRd_OUT
+    output reg [4:0]    ID_EX_RegisterRd_OUT, 
+    output reg [4:0]    ID_EX_Shamt_OUT, 
+    output reg          ID_EX_ShiftSrc_OUT
 );
 
 
@@ -138,6 +142,8 @@ module ID_EX (
     wire [4:0]          IF_ID_RegisterRs;
     wire [4:0]          IF_ID_RegisterRt; 
     wire [4:0]          IF_ID_RegisterRd; 
+    wire [4:0]          Shamt;
+    wire                ShiftSrc;
 
 
     /* Main  function */ 
@@ -158,6 +164,8 @@ module ID_EX (
             ID_EX_RegisterRs_OUT <= IF_ID_RegisterRs;
             ID_EX_RegisterRt_OUT <= IF_ID_RegisterRt;
             ID_EX_RegisterRd_OUT <= IF_ID_RegisterRd;
+            ID_EX_Shamt_OUT <= Shamt;
+            ID_EX_ShiftSrc_OUT <= ShiftSrc;
         end
         else begin
             MemtoReg_OUT <= 0;
@@ -175,6 +183,9 @@ module ID_EX (
             ID_EX_RegisterRs_OUT <= 0;
             ID_EX_RegisterRt_OUT <= 0;
             ID_EX_RegisterRd_OUT <= 0;
+            ID_EX_Shamt_OUT <= 0;
+            ID_EX_ShiftSrc_OUT <= 0;
+
         end
     end
 
