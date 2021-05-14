@@ -29,21 +29,22 @@ module BranchUnit (
     output reg          PCSrc
 );
 
+    initial begin
+        PCSrc = 0;
+    end
     always @(*) begin
         case (Branch) 
             /* not branch */
             2'b00: begin
-                PCSrc = 1'b0;
+                PCSrc <= 1'b0;
             end
             /* beq */
             2'b01: begin
-                if (zero) 
-                    PCSrc = 1'b1;
+                PCSrc <= zero;
             end
             /* bne */
             2'b10: begin
-                if (!zero) 
-                    PCSrc = 1'b1;
+                PCSrc <= !zero;
             end
         endcase
         // PCSrc = 1'b0;

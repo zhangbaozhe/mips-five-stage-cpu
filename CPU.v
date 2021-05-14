@@ -133,7 +133,6 @@ module CPU (
     wire                _jump;
     ControlUnit _control_unit (
         _if_id_ins_out, 
-        _stall, 
         _mem_to_reg, 
         _reg_write, 
         _mem_write, 
@@ -170,14 +169,18 @@ module CPU (
     );
 
     /* Suber */
-    wire [31:0]         _src_a;
-    wire [31:0]         _src_b;
+    reg [31:0]          _src_a;
+    reg [31:0]          _src_b;
+    wire [31:0]         _suber_data1;
+    wire [31:0]         _suber_data2;
+    assign _suber_data1 = _src_a;
+    assign _suber_data2 = _src_b;
     wire [31:0]         _result;
     wire                _zero;
     wire                _neg;
     Suber _suber (
-        _src_a, 
-        _src_b, 
+        _suber_data1, 
+        _suber_data2, 
         _result, 
         _zero, 
         _neg
@@ -204,10 +207,30 @@ module CPU (
     /* mux before suber */
     wire [31:0]         _ex_mem_alu_result;
     wire [31:0]         _mem_wb_read_data;
+    always @(*) begin
+        case (_branch_forward_a)
+            2'b00:
+                _src_a = _read_data1;
+            2'b10:
+                _src_a = _ex_mem_alu_result;
+            2'b01:
+                _src_a = _wb_data;
+        endcase
+        case (_branch_forward_b)
+            2'b00:
+                _src_b = _read_data1;
+            2'b10:
+                _src_b = _ex_mem_alu_result;
+            2'b01:
+                _src_b = _wb_data;
+        endcase
+    end
+    /*
     assign _src_a = (_branch_forward_a == 2'b00) ? _read_data1 : 
-                    (_branch_forward_a == 2'b10) ? _ex_mem_alu_result : _mem_wb_read_data; 
+                    ((_branch_forward_a == 2'b10) ? _ex_mem_alu_result : _mem_wb_read_data); 
     assign _src_b = (_branch_forward_b == 2'b00) ? _read_data2 : 
-                    (_branch_forward_b == 2'b10) ? _ex_mem_alu_result : _mem_wb_read_data; 
+                    ((_branch_forward_b == 2'b10) ? _ex_mem_alu_result : _mem_wb_read_data); 
+    */ 
 
     /* Branch Unit */
     wire                _pc_src;
@@ -247,6 +270,7 @@ module CPU (
 
     ID_EX _id_ex (
         clk, 
+        _stall, 
         _mem_to_reg, 
         _reg_write, 
         _mem_write, 

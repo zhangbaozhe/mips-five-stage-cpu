@@ -86,6 +86,7 @@ endmodule
 
 module ID_EX (
     input               CLK, 
+    input               Flush, 
     input               MemtoReg, 
     input               RegWrite, 
     input               MemWrite, 
@@ -121,6 +122,7 @@ module ID_EX (
 
     /* Inputs declaration */
     wire                CLK; 
+    wire                Flush; 
     wire                MemtoReg; 
     wire                RegWrite; 
     wire                MemWrite; 
@@ -140,21 +142,40 @@ module ID_EX (
 
     /* Main  function */ 
     always @(posedge CLK) begin
-        MemtoReg_OUT <= MemtoReg;
-        RegWrite_OUT <= RegWrite;
-        MemWrite_OUT <= MemWrite; 
-        MemRead_OUT <= MemRead;
-        Branch_OUT <= Branch;
-        PCSrc_OUT <= PCSrc;
-        ALUControl_OUT <= ALUControl;
-        ALUSrc_OUT <= ALUSrc;
-        RegDst_OUT <= RegDst;
-        readData1_OUT <= readData1;
-        readData2_OUT <= readData2;
-        extendedData_OUT <= extendedData;
-        ID_EX_RegisterRs_OUT <= IF_ID_RegisterRs;
-        ID_EX_RegisterRt_OUT <= IF_ID_RegisterRt;
-        ID_EX_RegisterRd_OUT <= IF_ID_RegisterRd;
+        if (!Flush) begin
+            MemtoReg_OUT <= MemtoReg;
+            RegWrite_OUT <= RegWrite;
+            MemWrite_OUT <= MemWrite; 
+            MemRead_OUT <= MemRead;
+            Branch_OUT <= Branch;
+            PCSrc_OUT <= PCSrc;
+            ALUControl_OUT <= ALUControl;
+            ALUSrc_OUT <= ALUSrc;
+            RegDst_OUT <= RegDst;
+            readData1_OUT <= readData1;
+            readData2_OUT <= readData2;
+            extendedData_OUT <= extendedData;
+            ID_EX_RegisterRs_OUT <= IF_ID_RegisterRs;
+            ID_EX_RegisterRt_OUT <= IF_ID_RegisterRt;
+            ID_EX_RegisterRd_OUT <= IF_ID_RegisterRd;
+        end
+        else begin
+            MemtoReg_OUT <= 0;
+            RegWrite_OUT <= 0;
+            MemWrite_OUT <= 0; 
+            MemRead_OUT <= 0;
+            Branch_OUT <= 0;
+            PCSrc_OUT <= 0;
+            ALUControl_OUT <= 0;
+            ALUSrc_OUT <= 0;
+            RegDst_OUT <= 0;
+            readData1_OUT <= 0;
+            readData2_OUT <= 0;
+            extendedData_OUT <= 0;
+            ID_EX_RegisterRs_OUT <= 0;
+            ID_EX_RegisterRt_OUT <= 0;
+            ID_EX_RegisterRd_OUT <= 0;
+        end
     end
 
 endmodule
