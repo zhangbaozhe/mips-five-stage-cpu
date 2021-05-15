@@ -99,7 +99,7 @@ module HazardUnit (
             IF_ID_Write = 0;
             Stall = 1;
         end
-        /* another stall for lw before branching */
+        /* another stall for lw before jumping */
         else if ((Branch == 2'b11) && EX_MEM_MemRead
                 && (EX_MEM_RegisterRd == IF_ID_RegisterRs))
         begin

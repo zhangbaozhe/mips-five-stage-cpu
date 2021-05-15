@@ -1,0 +1,357 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\geometry{left=2.54cm, right=2.54cm, top=2.54cm, bottom=2.54cm}
+\pagestyle{fancy}
+\author{Zhang Baozhe}
+\date{\today}
+
+
+\begin{document}
+
+\hypertarget{header-n0}{%
+\section{Report of Five-Stage Pipelined MIPS CPU}\label{header-n0}}
+
+In this project, a basic 5-stage pipelined CPU was implemented following
+the basic design described in the textbook.
+
+\hypertarget{header-n14}{%
+\section{Compilation and Test Overview}\label{header-n14}}
+
+As described in the README file, basically to compile and test all the
+sample given, type
+
+\begin{verbatim}
+> make 
+> make auto -i
+\end{verbatim}
+
+This will generate a file called \texttt{DIFFERENCE} containing the
+results of the \texttt{diff} command.
+
+For more details you can refer to the README file.
+
+\hypertarget{header-n4}{%
+\section{Big Thoughts}\label{header-n4}}
+
+I try to use an OOP style to construct the project. Since, there are
+many blocks, it is natural to capsulate these bolcks in modules and
+instantiate them in a topper module, i.e.,
+
+\begin{verbatim}
+top_module // in the test bench
+----the instance of CPU
+--------the instances of function modules in CPU
+\end{verbatim}
+
+Below is the (not that detailed) design diagram,
+
+\begin{figure}
+\centering
+\includegraphics{/Users/Jack/Desktop/Screen Shot 2021-05-15 at 9.20.15 PM.png}
+\caption{CPU Design}
+\end{figure}
+
+As the above diagram shows, in the project, I adopt the method of moving
+the branch part from MEM stage to ID stage to speed up the performance,
+which naturally generates two units, Branch Forwarding Unit and Branch
+Delay Unit (though j-type instructions also go through these units).
+Besides, there are also the basic forwarding and hazard detection units.
+As blocked in the red rectangles, the multiplexors in these parts are
+not detailed, the more detailed ones can be refered in the next section.
+
+\hypertarget{header-n6}{%
+\section{Implementation Details}\label{header-n6}}
+
+\hypertarget{header-n12}{%
+\subsection{Write and read in the register file at the same
+time}\label{header-n12}}
+
+This hazard is described as the structural hazard. It can be solved by a
+forwarding inside the register file. Below is part of the implementation
+of the verilog file:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{always}\NormalTok{ @(}\KeywordTok{posedge}\NormalTok{ CLK) }\KeywordTok{begin}
+        \KeywordTok{if}\NormalTok{ (RegWrite) }\KeywordTok{begin}
+\NormalTok{            registers[writeReg] \textless{}= writeData;}
+        \KeywordTok{end}
+    \KeywordTok{end}
+    \KeywordTok{always}\NormalTok{ @(*) }\KeywordTok{begin}
+        \KeywordTok{if}\NormalTok{ ((readReg1 == writeReg) \&\& RegWrite) }\CommentTok{// here}
+\NormalTok{            readData1 = writeData;}
+        \KeywordTok{else} 
+\NormalTok{            readData1 = registers[readReg1];}
+    \KeywordTok{end}
+    \KeywordTok{always}\NormalTok{ @(*) }\KeywordTok{begin}
+        \KeywordTok{if}\NormalTok{ ((readReg2 == writeReg) \&\& RegWrite) }\CommentTok{// and here}
+\NormalTok{            readData2 = writeData;}
+        \KeywordTok{else} 
+\NormalTok{            readData2 = registers[readReg2];}
+    \KeywordTok{end}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{header-n59}{%
+\subsection{Muxes before PC}\label{header-n59}}
+
+Below is a diagram illustrating the details of the multiplexors before
+PC:
+
+\begin{figure}
+\centering
+\includegraphics{/Users/Jack/Downloads/IMG_C0107E8BA0A2-1.jpeg}
+\caption{Muxex before PC}
+\end{figure}
+
+\hypertarget{header-n68}{%
+\subsection{Hazard detection}\label{header-n68}}
+
+This unit detects whether a stall will happen. It can solve the
+following types of hazard:
+
+\begin{verbatim}
+add $1, $2, $3
+# at least 1-cycle stall
+beq $1, $2, address 
+----------------------------
+lw $1, 20($2)
+# at least 2-cycle stall
+beq $1, $2, address
+----------------------------
+addi $1, $zero, 20
+# at least 1-cycle stall
+jr $1
+----------------------------
+lw $1, 20($2)
+# at least 2-cycle stall
+jr $1
+\end{verbatim}
+
+The detailed logic can be referred from the source code.
+
+\hypertarget{header-n134}{%
+\subsection{ALU src details}\label{header-n134}}
+
+This part is the most messy part in the CPU, since there are many
+different sources for ALU and the control unit has to decide to use
+which source. There are basically three types of souces:
+arithematic(from registers or immediates), load/store address
+calculation, and shift. The details can be referred from the
+\texttt{CPU.v} file.
+
+\hypertarget{header-n73}{%
+\subsection{Forwarding details}\label{header-n73}}
+
+This part basically implementates the forwarding scheme for ALU. As
+described in the textbook, it solves the regular arithmetic types:
+
+\begin{itemize}
+\item
+  1a. EX/MEM.RegisterRd = ID/EX.RegisterRs
+\end{itemize}
+
+\begin{itemize}
+\item
+  1b. EX/MEM.RegisterRd = ID/EX.RegisterRt
+\item
+  2a. MEM/WB.RegisterRd = ID/EX.RegisterRs
+\item
+  2b. MEM/WB.RegisterRd = ID/EX.RegisterRt
+\end{itemize}
+
+Besides, it also supports the forwarding for store word, e.g.,
+
+\begin{verbatim}
+add $1, $2, $3
+# forwarding
+sw $1, 20($4)
+\end{verbatim}
+
+\hypertarget{header-n126}{%
+\subsection{Branch forward and related details}\label{header-n126}}
+
+This unit is similar to the forwarding unit in the EX stage, but it has
+some to perform after the stall of the branch or jump instructions.
+
+\hypertarget{header-n66}{%
+\section{Performance Analysis}\label{header-n66}}
+
+\begin{longtable}[]{@{}llll@{}}
+\toprule
+& Number of Instructions & Number of Clock Cycles & CPI\tabularnewline
+\midrule
+\endhead
+Test 1 & 53 & 56 & 1.057\tabularnewline
+Test 2 & 12 & 15 & 1.250\tabularnewline
+Test 3 & 14 & 18 & 1.286\tabularnewline
+Test 4 & 14 & 17 & 1.214\tabularnewline
+Test 5 & 25 & 179 & 7.160\tabularnewline
+Test 6 & 52 & 54 & 1.038\tabularnewline
+Test 7 & 45 & 47 & 1.044\tabularnewline
+Test 8 & 25 & 31 & 1.240\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{header-n34}{%
+\section{Pitfalls}\label{header-n34}}
+
+\hypertarget{header-n10}{%
+\subsection{The given file can be misleading}\label{header-n10}}
+
+The misleading part, I think during my debugging, is that the reading of
+one instruction or some data in the memory needs the CLK to trigger
+which is conunter-intuitive. Thus, to improve the performance, I change
+the reading of the RAM to asychronously triggered.
+
+\hypertarget{header-n37}{%
+\subsection{The branch/jump delay slot needs
+handling}\label{header-n37}}
+
+By default, when taking a branch or jump instruction (whether the branch
+is taken or not) the next instruction is automatically loaded into the
+IF stage after the branch goes to ID stage because at that time the
+branch is not taken and \texttt{PC+4} just takes place. This is actually
+a good thing for the compilers to effciently use these slots, but in
+this project, it needs handling properly when the branch or jump is
+indeed taken.
+
+The solution is simple. For jump and the taken branch instructions, the
+program will detect: 1. whether the branch/jump will be taken; 2. if
+taken, then delay unit will flush the ID/EX register.
+
+\hypertarget{header-n43}{%
+\subsection{\texorpdfstring{The forwarding scheme of JAL and JR
+}{The forwarding scheme of JAL and JR }}\label{header-n43}}
+
+Basically, \texttt{jal} is similar to plain \texttt{j} except for the
+link action, and it can be reduced to
+
+\begin{verbatim}
+jal 20
+----------------------------
+j 20
+addi $at, $zero, PC+4
+\end{verbatim}
+
+Thus, only use some multiplexors to control the data flow of the
+registers and control the control unit to generate control code can
+achieve this instruction.
+
+The \texttt{jr} is a R-type instruction which is different from the
+\texttt{j} or \texttt{jal}. To achieve this instruction, I add it to the
+branch part(in my design, \texttt{beq} has a branch code of
+\texttt{2\textquotesingle{}b01}, \texttt{bne} has a branch code of
+\texttt{2\textquotesingle{}b10}, not branch for
+\texttt{2\textquotesingle{}b0}, and \texttt{jr} for
+\texttt{2\textquotesingle{}b11}).
+
+\end{document}
