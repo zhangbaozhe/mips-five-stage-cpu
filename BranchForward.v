@@ -37,7 +37,6 @@ module BranchForward (
     wire [4:0]          IF_ID_RegisterRt;
     
     always @(*) begin
-        /* BUG FIXED: allow two forwardings happen in a single instruction */
 
         /* defaults */ 
         BranchForwardA = 2'b00;

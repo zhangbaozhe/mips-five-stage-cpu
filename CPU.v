@@ -160,6 +160,7 @@ module CPU (
     /* wire _stall */
     HazardUnit _hazard_unit (
         _id_ex_mem_read, 
+        _ex_mem_mem_read, 
         _branch, 
         _delay, 
         ex_mem_register_rd_in,  

@@ -25,7 +25,7 @@
  *      # 2-cycle stall (3)
  *      beq $1,     $2, address
  * In addition, for JR instructions, the implementation is much similar, 
- * e.g., there will be a 2-cycle stall between the possible instructions.
+ * e.g., there will be a 2-cycle(or 1-cycle) stall between the possible instructions.
  * Then a forwarding will take place.
  *
  *
@@ -36,6 +36,7 @@
 
 module HazardUnit (
     input               ID_EX_MemRead, 
+    input               EX_MEM_MemRead, 
     input [1:0]         Branch,
     input               Delay,  
     input [4:0]         ID_EX_RegisterRd, /* (regdst) ? rt : rd */ 
@@ -48,6 +49,7 @@ module HazardUnit (
 );
 
     wire                ID_EX_MemRead;
+    wire                EX_MEM_MemRead;
     wire [1:0]          Branch;
     wire                Delay;
     wire [4:0]          ID_EX_RegisterRd;
@@ -73,7 +75,7 @@ module HazardUnit (
             Stall = 1;
         end
         /* this handles (2) */
-        else if ((Branch != 2'b00) 
+        else if ((Branch == 2'b10 || Branch == 2'b01) 
                 && ((ID_EX_RegisterRd == IF_ID_RegisterRs)
                     || (ID_EX_RegisterRd == IF_ID_RegisterRt)))
         begin
@@ -82,10 +84,24 @@ module HazardUnit (
             Stall = 1;
         end
         /* this handles the second cycle in (3) */
-        /* jr will stall for 2 cycles whatever */
-        else if ((Branch != 2'b00) 
+        else if ((Branch == 2'b10 || Branch == 2'b01) 
                 && ((EX_MEM_RegisterRd == IF_ID_RegisterRs)
                     || (EX_MEM_RegisterRd == IF_ID_RegisterRt))) 
+        begin
+            PCWrite = 0;
+            IF_ID_Write = 0;
+            Stall = 1;
+        end
+        else if ((Branch == 2'b11)
+                && (ID_EX_RegisterRd == IF_ID_RegisterRs))
+        begin
+            PCWrite = 0;
+            IF_ID_Write = 0;
+            Stall = 1;
+        end
+        /* another stall for lw before branching */
+        else if ((Branch == 2'b11) && EX_MEM_MemRead
+                && (EX_MEM_RegisterRd == IF_ID_RegisterRs))
         begin
             PCWrite = 0;
             IF_ID_Write = 0;
