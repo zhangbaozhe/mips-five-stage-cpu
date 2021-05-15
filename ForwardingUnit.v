@@ -23,6 +23,7 @@
 `define _FORWARDING_UNIT
 
 module ForwardingUnit (
+    input               ID_EX_MemWrite, // for sw
     input               EX_MEM_RegWrite, 
     input               MEM_WB_RegWirte, 
     input [4:0]         EX_MEM_RegisterRd, 
@@ -31,7 +32,7 @@ module ForwardingUnit (
     input [4:0]         ID_EX_RegisterRt, 
     output reg [1:0]    ForwardA, 
     output reg [1:0]    ForwardB,
-    output reg          IsForwarding
+    output reg          SW_Forwarding
 );
 
     /* input declaration */
@@ -56,30 +57,28 @@ module ForwardingUnit (
         /* defaults */ 
         ForwardA <= 2'b00;
         ForwardB <= 2'b00;
-        IsForwarding <= 1'b0;
+        SW_Forwarding <= 1'b0;
         
         /* EX hazard */ 
-        if (EX_MEM_RegWrite 
+        if (EX_MEM_RegWrite && !ID_EX_MemWrite 
             && (EX_MEM_RegisterRd != 5'b00000) 
             && (EX_MEM_RegisterRd == ID_EX_RegisterRs))
             begin
                 ForwardA <= 2'b10;
                 // ForwardB <= 2'b00;
-                IsForwarding <= 1'b1;
             end
 
         
-        if (EX_MEM_RegWrite 
+        if (EX_MEM_RegWrite && !ID_EX_MemWrite 
             && (EX_MEM_RegisterRd != 5'b00000) 
             && (EX_MEM_RegisterRd == ID_EX_RegisterRt))
             begin
                 // ForwardA <= 2'b00;
                 ForwardB <= 2'b10;
-                IsForwarding <= 1'b1;
             end
 
         /* MEM hazard */
-        if (MEM_WB_RegWirte
+        if (MEM_WB_RegWirte && !ID_EX_MemWrite
             && (MEM_WB_RegisterRd != 5'b00000)
             && ! (EX_MEM_RegWrite 
                 && (EX_MEM_RegisterRd != 5'b00000)
@@ -88,10 +87,9 @@ module ForwardingUnit (
             begin
                 ForwardA <= 2'b01;
                 // ForwardB <= 2'b00;
-                IsForwarding <= 1'b1;
             end
 
-        if (MEM_WB_RegWirte
+        if (MEM_WB_RegWirte && !ID_EX_MemWrite
             && (MEM_WB_RegisterRd != 5'b00000)
             && ! (EX_MEM_RegWrite 
                 && (EX_MEM_RegisterRd != 5'b00000)
@@ -100,10 +98,16 @@ module ForwardingUnit (
             begin
                 // ForwardA <= 2'b00;
                 ForwardB <= 2'b01;
-                IsForwarding <= 1'b1;
                 $display("MEM forwarding");
             end
-    
+        /* SW Forwarding */
+        if (EX_MEM_RegWrite && ID_EX_MemWrite
+            && (EX_MEM_RegisterRd != 5'b00000)
+            && (EX_MEM_RegisterRd == ID_EX_RegisterRt))
+            begin
+                SW_Forwarding <= 1'b1;
+                $display("SW_FORWARDING");
+            end 
 
     end
 

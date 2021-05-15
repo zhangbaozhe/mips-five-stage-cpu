@@ -35,15 +35,16 @@ addi $s5, $zero, 3 # if jr succeeds, this should be skipped
 addi $t0, $zero, 16 # $t0 shoule be 16
 addi $t1, $zero, 32 # $t1 should be 32
 addi $t2, $zero, 64 # $t2 should be 64
-sw $a0, 0($zero)  # 2 in DATA_MEM[0]
-sw $a1, 4($zero)  # 4 in DATA_MEM[1]
-sw $a2, 8($zero)  # 8 in DATA_MEM[2]
-sw $t0, 12($zero) # 16 in DATA_MEM[3]
-sw $t1, 16($zero) # 32 in DATA_MEM[4]
-sw $t2, 20($zero) # 64 in DATA_MEM[5]
-sw $s0, 24($zero) # -1 in DATA_MEM[6]
-sw $s1, 28($zero) # -2 in DATA_MEM[7]
-sw $s2, 32($zero) # -4 in DATA_MEM[8]
-sw $s3, 36($zero) # -8 in DATA_MEM[9]
-sw $s4, 40($zero) # -16 in DATA_MEM[10]
-sw $s5, 44($zero) # -32 in DATA_MEM[11]
+addi $fp, $zero, 8192
+sw $a0, 0($fp)  # 2 in DATA_MEM[0]
+sw $a1, 4($fp)  # 4 in DATA_MEM[1]
+sw $a2, 8($fp)  # 8 in DATA_MEM[2]
+sw $t0, 12($fp) # 16 in DATA_MEM[3]
+sw $t1, 16($fp) # 32 in DATA_MEM[4]
+sw $t2, 20($fp) # 64 in DATA_MEM[5]
+sw $s0, 24($fp) # -1 in DATA_MEM[6]
+sw $s1, 28($fp) # -2 in DATA_MEM[7]
+sw $s2, 32($fp) # -4 in DATA_MEM[8]
+sw $s3, 36($fp) # -8 in DATA_MEM[9]
+sw $s4, 40($fp) # -16 in DATA_MEM[10]
+sw $s5, 44($fp) # -32 in DATA_MEM[11]

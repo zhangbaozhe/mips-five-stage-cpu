@@ -1,0 +1,214 @@
+[*]
+[*] GTKWave Analyzer v3.3.107 (w)1999-2020 BSI
+[*] Fri May 14 21:55:30 2021
+[*]
+[dumpfile] "/Users/Jack/cuhksz/course/year2/term2/csc3050/cpu-project/cpu_tb.vcd"
+[dumpfile_mtime] "Fri May 14 21:53:49 2021"
+[dumpfile_size] 5661901
+[savefile] "/Users/Jack/cuhksz/course/year2/term2/csc3050/cpu-project/Untitled.gtkw"
+[timestart] 0
+[size] 1920 1080
+[pos] -1 -1
+*-2.098825 27 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top_module.
+[treeopen] top_module._cpu.
+[sst_width] 193
+[signals_width] 316
+[sst_expanded] 1
+[sst_vpaned_height] 335
+@200
+-
+-_pc
+@28
+top_module._cpu._pc.CLK
+top_module._cpu._pc.PCWrite
+@22
+top_module._cpu._pc.in[31:0]
+top_module._cpu._pc.out[31:0]
+@200
+-
+-_ins_ram
+@28
+top_module._cpu._ins_ram.CLOCK
+@24
+top_module._cpu._ins_ram.FETCH_ADDRESS[31:0]
+@22
+[color] 3
+top_module._cpu._ins_ram.DATA[31:0]
+@200
+-
+-_if_id
+@28
+top_module._cpu._if_id.CLK
+@22
+top_module._cpu._if_id.INS_IN[31:0]
+top_module._cpu._if_id.PC_IN[31:0]
+[color] 3
+top_module._cpu._if_id.INS_OUT[31:0]
+top_module._cpu._if_id.PC_OUT[31:0]
+@200
+-
+-_reg_file
+@28
+top_module._cpu._reg_file.CLK
+top_module._cpu._reg_file.RegWrite
+@22
+top_module._cpu._reg_file.readReg1[25:21]
+top_module._cpu._reg_file.readReg2[20:16]
+top_module._cpu._reg_file.writeReg[4:0]
+top_module._cpu._reg_file.writeData[31:0]
+top_module._cpu._reg_file.readData1[31:0]
+top_module._cpu._reg_file.readData2[31:0]
+@200
+-
+-_control_unit
+@28
+top_module._cpu._control_unit.Jal
+@22
+top_module._cpu._control_unit.ALUControl[3:0]
+@28
+top_module._cpu._control_unit.ALUSrc
+top_module._cpu._control_unit.Branch[1:0]
+@29
+top_module._cpu._control_unit.Jump
+@28
+top_module._cpu._control_unit.MemRead
+top_module._cpu._control_unit.MemWrite
+top_module._cpu._control_unit.MemtoReg
+top_module._cpu._control_unit.RegDst
+top_module._cpu._control_unit.RegWrite
+@22
+top_module._cpu._control_unit.instruction[31:0]
+@200
+-
+-_hazard_unit
+@28
+top_module._cpu._hazard_unit.Branch[1:0]
+top_module._cpu._hazard_unit.Delay
+@22
+top_module._cpu._hazard_unit.EX_MEM_RegisterRd[4:0]
+@28
+top_module._cpu._hazard_unit.ID_EX_MemRead
+@22
+top_module._cpu._hazard_unit.ID_EX_RegisterRd[4:0]
+top_module._cpu._hazard_unit.ID_EX_RegisterRt[4:0]
+top_module._cpu._hazard_unit.IF_ID_RegisterRs[4:0]
+top_module._cpu._hazard_unit.IF_ID_RegisterRt[4:0]
+@28
+top_module._cpu._hazard_unit.IF_ID_Write
+top_module._cpu._hazard_unit.PCWrite
+top_module._cpu._hazard_unit.Stall
+top_module._cpu._hazard_unit.Stall
+@200
+-
+-_branch_forward
+@28
+top_module._cpu._branch_forward.BranchForwardA[1:0]
+top_module._cpu._branch_forward.BranchForwardB[1:0]
+@c00028
+top_module._cpu._branch_forward.Branch[1:0]
+@28
+(0)top_module._cpu._branch_forward.Branch[1:0]
+(1)top_module._cpu._branch_forward.Branch[1:0]
+@1401200
+-group_end
+@c00022
+top_module._cpu._branch_forward.EX_MEM_RegisterRd[4:0]
+@28
+(0)top_module._cpu._branch_forward.EX_MEM_RegisterRd[4:0]
+(1)top_module._cpu._branch_forward.EX_MEM_RegisterRd[4:0]
+(2)top_module._cpu._branch_forward.EX_MEM_RegisterRd[4:0]
+(3)top_module._cpu._branch_forward.EX_MEM_RegisterRd[4:0]
+(4)top_module._cpu._branch_forward.EX_MEM_RegisterRd[4:0]
+@1401200
+-group_end
+@22
+top_module._cpu._branch_forward.IF_ID_RegisterRs[4:0]
+top_module._cpu._branch_forward.IF_ID_RegisterRt[4:0]
+top_module._cpu._branch_forward.MEM_WB_RegisterRd[4:0]
+@200
+-
+-
+-_suber
+@22
+top_module._cpu._suber.data1[31:0]
+top_module._cpu._suber.data2[31:0]
+@28
+top_module._cpu._suber.neg
+@22
+top_module._cpu._suber.result[31:0]
+@28
+top_module._cpu._suber.zero
+@200
+-
+-_branch_unit
+@28
+top_module._cpu._branch_unit.Branch[1:0]
+top_module._cpu._branch_unit.zero
+top_module._cpu._branch_unit.PCSrc
+@200
+-
+-_id_ex
+@28
+top_module._cpu._id_ex.CLK
+top_module._cpu._id_ex.Flush
+top_module._cpu._id_ex.Branch[1:0]
+top_module._cpu._id_ex.Branch_OUT[1:0]
+top_module._cpu._id_ex.PCSrc
+top_module._cpu._id_ex.PCSrc_OUT
+@22
+top_module._cpu._id_ex.ID_EX_RegisterRd_OUT[4:0]
+top_module._cpu._id_ex.ID_EX_RegisterRs_OUT[4:0]
+top_module._cpu._id_ex.ID_EX_RegisterRt_OUT[4:0]
+top_module._cpu._id_ex.readData1[31:0]
+top_module._cpu._id_ex.readData2[31:0]
+top_module._cpu._id_ex.readData1_OUT[31:0]
+top_module._cpu._id_ex.readData2_OUT[31:0]
+top_module._cpu._id_ex.extendedData[31:0]
+top_module._cpu._id_ex.extendedData_OUT[31:0]
+@200
+-
+-_alu
+@22
+top_module._cpu._alu.ALUControl[3:0]
+top_module._cpu._alu.data1[31:0]
+top_module._cpu._alu.data2[31:0]
+top_module._cpu._alu.result[31:0]
+@28
+top_module._cpu._alu.zero
+@200
+-
+-_forwarding_unit
+-
+-_ex_mem
+@28
+top_module._cpu._ex_mem.CLK
+@22
+top_module._cpu._ex_mem.ALUResult[31:0]
+top_module._cpu._ex_mem.ALUResult_OUT[31:0]
+top_module._cpu._ex_mem.WriteData[31:0]
+top_module._cpu._ex_mem.WriteData_OUT[31:0]
+@200
+-
+-_mem
+@28
+top_module._cpu._mem.CLOCK
+@22
+top_module._cpu._mem.FETCH_ADDRESS[31:0]
+top_module._cpu._mem.EDIT_SERIAL[64:0]
+top_module._cpu._mem.DATA[31:0]
+@200
+-
+-_mem_wb
+@28
+top_module._cpu._mem_wb.CLK
+top_module._cpu._mem_wb.RegWrite
+top_module._cpu._mem_wb.RegWrite_OUT
+@22
+top_module._cpu._mem_wb.MEM_WB_RegisterRd[4:0]
+top_module._cpu._mem_wb.readData[31:0]
+top_module._cpu._mem_wb.ALUResult[31:0]
+top_module._cpu._mem_wb.readData_OUT[31:0]
+top_module._cpu._mem_wb.ALUResult_OUT[31:0]
+[pattern_trace] 1
+[pattern_trace] 0

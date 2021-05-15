@@ -38,8 +38,7 @@ module HazardUnit (
     input               ID_EX_MemRead, 
     input [1:0]         Branch,
     input               Delay,  
-    input [4:0]         ID_EX_RegisterRd, 
-    input [4:0]         ID_EX_RegisterRt, 
+    input [4:0]         ID_EX_RegisterRd, /* (regdst) ? rt : rd */ 
     input [4:0]         EX_MEM_RegisterRd, 
     input [4:0]         IF_ID_RegisterRs, 
     input [4:0]         IF_ID_RegisterRt, 
@@ -52,7 +51,7 @@ module HazardUnit (
     wire [1:0]          Branch;
     wire                Delay;
     wire [4:0]          ID_EX_RegisterRd;
-    wire [4:0]          ID_EX_RegisterRt;
+    // wire [4:0]          ID_EX_RegisterRt;
     wire [4:0]          EX_MEM_RegisterRd;
     wire [4:0]          IF_ID_RegisterRs;
     wire [4:0]          IF_ID_RegisterRt;
@@ -66,8 +65,8 @@ module HazardUnit (
     always @(*) begin
         /* this handles (1) and one cycle in (3) */
         if (ID_EX_MemRead 
-            && ((ID_EX_RegisterRt == IF_ID_RegisterRs)
-                || (ID_EX_RegisterRt == IF_ID_RegisterRt)))
+            && ((ID_EX_RegisterRd == IF_ID_RegisterRs)
+                || (ID_EX_RegisterRd == IF_ID_RegisterRt)))
         begin
             PCWrite = 0;
             IF_ID_Write = 0;

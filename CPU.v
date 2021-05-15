@@ -144,6 +144,7 @@ module CPU (
         _reg_dst,
         _jump, 
         _jal, 
+        _jr, 
         _shift_src
     );
 
@@ -161,8 +162,7 @@ module CPU (
         _id_ex_mem_read, 
         _branch, 
         _delay, 
-        _id_ex_register_rd, 
-        _id_ex_register_rt, 
+        ex_mem_register_rd_in,  
         _ex_mem_register_rd, 
         _if_id_register_rs, 
         _if_id_register_rt, 
@@ -221,7 +221,7 @@ module CPU (
         endcase
         case (_branch_forward_b)
             2'b00:
-                _src_b = _read_data1;
+                _src_b = _read_data2;
             2'b10:
                 _src_b = _ex_mem_alu_result;
             2'b01:
@@ -247,11 +247,17 @@ module CPU (
     /* TODO: jump */
     reg [31:0]         _jump_addr;
     always @(*) begin
-        _jump_addr = {_if_id_pc_out[31:28], _if_id_ins_out[25:0]};
+        _jump_addr = {_if_id_pc_out[31:28], _if_id_ins_out[25:0], 2'b00};
         _pc_in = _pc4;
         case (_pc_src)
             1'b1:
-                _pc_in = _pc_src;
+                case (_jr)
+                    1'b0:
+                        _pc_in = _pcBranch;
+                    1'b1:
+                        _pc_in = _src_a; // from branch forward
+
+                endcase
             1'b0: begin
                 case (_jump) 
                     1'b0:
@@ -303,6 +309,7 @@ module CPU (
         _mem_write, 
         _mem_read, 
         _branch, 
+        _jump, 
         _pc_src, 
         _alu_control, 
         _alu_src, 
@@ -320,6 +327,7 @@ module CPU (
         _id_ex_mem_write, 
         _id_ex_mem_read, 
         _id_ex_branch, 
+        _id_ex_jump, 
         _id_ex_pc_src, 
         _id_ex_alu_control, 
         _id_ex_alu_src, 
@@ -335,16 +343,17 @@ module CPU (
     );
 
     wire                _delay;
+    wire                _id_ex_jump;
     BranchDelay _branch_delay (
         _id_ex_branch, 
         _id_ex_pc_src, 
+        _id_ex_jump, 
         _delay
     );
 
     /* ALU */ 
     reg [31:0]          _alu_src_a;
     reg [31:0]          _alu_src_b;
-    reg [31:0]          _before_alu_src_b;
     wire                _alu_zero;
     wire [31:0]         _alu_result;
 
@@ -360,9 +369,10 @@ module CPU (
     
     wire [1:0]          _forward_a;
     wire [1:0]          _forward_b;
-    wire                _is_forwarding;
+    wire                _sw_forwarding;
 
     ForwardingUnit _forwarding_unit (
+        _id_ex_mem_write, 
         _ex_mem_reg_write, 
         _mem_wb_reg_write, /* TODO */
         _ex_mem_register_rd, 
@@ -371,13 +381,13 @@ module CPU (
         _id_ex_register_rt, 
         _forward_a, 
         _forward_b, 
-        _is_forwarding
+        _sw_forwarding
     );
 
     /* mux around ALU */
-    reg [31:0]          mux_temp;
     reg [31:0]          ex_mem_write_data_in;
     reg [4:0]           ex_mem_register_rd_in;
+    reg [31:0]          _sw_forwarding_result;
     always @(*) begin
         case (_forward_a)
             2'b00:
@@ -390,18 +400,18 @@ module CPU (
 
         case (_forward_b)
             2'b00: begin
-                mux_temp = (_id_ex_alu_src) ? _id_ex_extended_data : _id_ex_read_data2;
-                _before_alu_src_b = mux_temp;
+                _sw_forwarding_result = (_sw_forwarding) ? _ex_mem_alu_result : _id_ex_read_data2;
+
+                _alu_src_b = (_id_ex_alu_src) ? _id_ex_extended_data : _sw_forwarding_result;
             end
             2'b10:
-                _before_alu_src_b = _ex_mem_alu_result;
+                _alu_src_b = _ex_mem_alu_result;
             2'b01:
-                _before_alu_src_b = _wb_data;
+                _alu_src_b = _wb_data;
         endcase
 
-        _alu_src_b = (_id_ex_mem_write) ? _id_ex_extended_data : _before_alu_src_b;
-        /* Green part in the map */ 
-        ex_mem_write_data_in = (_is_forwarding) ? _before_alu_src_b : _id_ex_read_data2;
+        
+        ex_mem_write_data_in = _sw_forwarding_result;
 
         ex_mem_register_rd_in = (_id_ex_reg_dst) ? _id_ex_register_rt : _id_ex_register_rd;
     end

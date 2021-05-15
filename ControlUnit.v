@@ -328,8 +328,9 @@ module ControlUnit (
                         RegDst <= 0;
                         Jump <= 0;
                         Jal <= 0;
-                        Jr <= 1
+                        Jr <= 1;
                         ShiftSrc <= 0;
+                    end
                 endcase
             end
 
@@ -500,8 +501,8 @@ module ControlUnit (
                 MemRead <= 0;
                 Branch <= 2'b00;
                 ALUControl <= 4'b0010;
-                ALUSrc <= 1; 
-                RegDst <= 1;
+                ALUSrc <= 0; 
+                RegDst <= 0;
                 Jump <= 1;
                 Jal <= 1;
                 ShiftSrc <= 0;

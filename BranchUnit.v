@@ -46,6 +46,10 @@ module BranchUnit (
             2'b10: begin
                 PCSrc <= !zero;
             end
+            /* jr */
+            2'b11: begin
+                PCSrc <= 1'b1;
+            end
         endcase
         // PCSrc = 1'b0;
     end
@@ -55,15 +59,25 @@ endmodule
 module BranchDelay (
     input [1:0]         ID_EX_Branch, 
     input               ID_EX_PCSrc, 
+    input               ID_EX_Jump, 
     output reg          Delay
 );
+/* This deals with the "branch delay slot" or "jump delay slot" */
     wire [1:0]          ID_EX_Branch; 
     wire                ID_EX_PCSrc;
+    wire                ID_EX_Jump;
     always @(*) begin
+        /* branch delay slot */ 
         if (ID_EX_Branch != 2'b00 && ID_EX_PCSrc)
+            Delay = 1'b1;
+        else if (ID_EX_Jump)
+            Delay = 1'b1;
+        else if (ID_EX_Branch == 2'b11)
             Delay = 1'b1;
         else
             Delay = 1'b0;
+        
+
     end
 endmodule
 
