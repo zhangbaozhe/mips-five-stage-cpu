@@ -98,7 +98,7 @@ module ForwardingUnit (
             begin
                 // ForwardA <= 2'b00;
                 ForwardB <= 2'b01;
-                $display("MEM forwarding");
+                // $display("MEM forwarding");
             end
         /* SW Forwarding */
         if (EX_MEM_RegWrite && ID_EX_MemWrite
@@ -106,7 +106,7 @@ module ForwardingUnit (
             && (EX_MEM_RegisterRd == ID_EX_RegisterRt))
             begin
                 SW_Forwarding <= 1'b1;
-                $display("SW_FORWARDING");
+                // $display("SW_FORWARDING");
             end 
 
     end

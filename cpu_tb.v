@@ -26,8 +26,8 @@ module top_module;
     initial
     begin
         file = $fopen("RAM_OUTPUT", "w");
-        $dumpfile("cpu_tb.vcd");
-        $dumpvars(0, _cpu);
+        //$dumpfile("cpu_tb.vcd");
+        //$dumpvars(0, _cpu);
     end
 
     CPU _cpu (CLK);

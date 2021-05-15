@@ -37,10 +37,7 @@ module InstructionRAM
   reg [31:0] RAM [0:512-1];
 
   initial begin
-    $display("Reading instruction to RAM.");
     $readmemb("instruction.bin",RAM);
-    $display("RAM[0]: \t %32b", RAM[0]);
-    $display("RAM[1]: \t %32b", RAM[1]);
   end
 
   always @(*) begin : InstructionRAM_blockRamFile
